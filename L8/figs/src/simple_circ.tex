@@ -1,0 +1,27 @@
+\documentclass{article}
+
+\usepackage{pstricks}
+
+
+
+\begin{document}
+ \psset{unit =1.0cm, linewidth=1.5\pslinewidth}
+\begin{center}
+\begin{pspicture}(10,6)
+\pscircle[linewidth=0.5mm](5,4){1.0}
+\rput(5,4){Heart}
+\pscurve[linewidth=0.5mm](6,4)(8.5,3.5)(9,3)
+\psframe[linewidth=0.5mm,framearc=0.25](7,2)(11,3)
+\rput(9,2.5){Systemic arteries}
+\pscurve[linewidth=0.5mm](9,2)(8.5,1)(7,0.5)
+\psframe[linewidth=0.5mm](3,0)(7,1)
+\rput(5,0.5){Body}
+\pscurve[linewidth=0.5mm](3,0.5)(1.5,1)(1,2)
+\psframe[linewidth=0.5mm,framearc=0.25](-1,2)(3,3)
+\rput(1,2.5){Systemic veins}
+\pscurve[linewidth=0.5mm](1,3)(1.5,3.5)(4,4)
+\end{pspicture}
+\end{center}
+
+\end{document}
+

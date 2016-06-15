@@ -1,0 +1,703 @@
+<!--
+Automatically generated HTML file from DocOnce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="DocOnce: https://github.com/hplgit/doconce/" />
+<meta name="description" content="The cable equation A.K.A. the monodomain model">
+
+<title>The cable equation A.K.A. the monodomain model</title>
+
+
+<link href="https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_styles/style_solarized_box/css/solarized_light_code.css" rel="stylesheet" type="text/css" title="light"/>
+<script src="https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_styles/style_solarized_box/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="http://thomasf.github.io/solarized-css/solarized-light.min.css" rel="stylesheet">
+<style type="text/css">
+h1 {color: #b58900;}  /* yellow */
+/* h1 {color: #cb4b16;}  orange */
+/* h1 {color: #d33682;}  magenta, the original choice of thomasf */
+code { padding: 0px; background-color: inherit; }
+pre {
+  border: 0pt solid #93a1a1;
+  box-shadow: none;
+}
+
+div { text-align: justify; text-justify: inter-word; }
+</style>
+
+
+</head>
+
+<!-- tocinfo
+{'highest level': 2,
+ 'sections': [(u'Overview', 2, None, '___sec0'),
+              (u'History lesson', 2, None, '___sec1'),
+              (u'Neurons', 2, None, '___sec2'),
+              (u'Why is the cable equation important?', 2, None, '___sec3'),
+              (u'Electric flow in neurons', 2, None, '___sec4'),
+              (u'The cable equation (Chap 4.1)', 2, None, '___sec5'),
+              (u'Sketch of a discrete cable', 2, None, '___sec6'),
+              (u'Curents are assumed to be Ohmic', 2, None, '___sec7'),
+              (u'Conservation of current (1)', 2, None, '___sec8'),
+              (u'Conservation of current (2)', 2, None, '___sec9'),
+              (u'Conservation of current (3)', 2, None, '___sec10'),
+              (u'Incorporating cell membrane physiology',
+               2,
+               None,
+               '___sec11'),
+              (u'Physical units', 2, None, '___sec12'),
+              (u'Exercise', 2, None, '___sec13'),
+              (u'Scaling the cable equation (1)', 2, None, '___sec14'),
+              (u'Scaling the cable equation (2)', 2, None, '___sec15'),
+              (u'The reaction term (Chapter 4.2,6.2,6.3)',
+               2,
+               None,
+               '___sec16'),
+              (u'Boundary conditions', 2, None, '___sec17'),
+              (u'Passive condition (1)', 2, None, '___sec18'),
+              (u'Passive conduction (2)', 2, None, '___sec19'),
+              (u'The bistable equation (Chapter 6.2.1) (1)',
+               2,
+               None,
+               '___sec20'),
+              (u'The bistable equation (2)', 2, None, '___sec21'),
+              (u'The bistable equation (3)', 2, None, '___sec22'),
+              (u'The bistable equation (4)', 2, None, '___sec23'),
+              (u'The FitzHugh-Nagumo model (1)', 2, None, '___sec24'),
+              (u'The FitzHugh-Nagumo model (2)', 2, None, '___sec25'),
+              (u'Conduction in cardiac tissue (1)', 2, None, '___sec26'),
+              (u'Conduction in cardiac tissue (2)', 2, None, '___sec27'),
+              (u'Gap junctions', 2, None, '___sec28'),
+              (u'Effective conductivity (1)', 2, None, '___sec29'),
+              (u'Effective conductivity (2)', 2, None, '___sec30'),
+              (u'Effective conductivity (3)', 2, None, '___sec31'),
+              (u'Summary', 2, None, '___sec32')]}
+end of tocinfo -->
+
+<body>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "AMS"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+</script>
+<script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+    
+<!-- ------------------- main content ---------------------- -->
+
+
+
+<center><h1>The cable equation A.K.A. the monodomain model</h1></center>  <!-- document title -->
+
+<p>
+<!-- author(s): Joakim Sundnes -->
+
+<center>
+<b>Joakim Sundnes</b> 
+</center>
+
+<p>
+<!-- institution(s) -->
+
+<br>
+<p>
+<center><h4>Jun 15, 2016</h4></center> <!-- date -->
+<br>
+<p>
+<!-- !split -->
+
+<h2 id="___sec0">Overview </h2>
+
+<ul>
+  <li> Introduction</li>
+
+<ul>
+    <li> History</li>
+    <li> Brief overview of neurons</li>
+</ul>
+
+  <li> Derivation of the cable equation</li>
+  <li> Scaling/dimensionless form</li>
+  <li> Example models</li>
+  <li> Gap junctions and cardiac conduction</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec1">History lesson </h2>
+<center><p><img src="figs/cable_map.jpg" align="bottom" width=700></p></center>
+<center><p><img src="figs/first_cable.jpg" align="bottom" width=400></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec2">Neurons </h2>
+<center><p><img src="figs/250.png" align="bottom" width=500></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec3">Why is the cable equation important? </h2>
+
+<ul>
+  <li> Fundamental for modeling neurons</li>
+  <li> Signal propagation in Purkinje network</li>
+  <li> Extends to cardiac conduction in 3D (bidomain, monodomain)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec4">Electric flow in neurons </h2>
+
+<p>
+The neuron consists of three parts:
+
+<ul>
+  <li> Dendrite-tree, the &quot;input stage&quot; of the neuron, converges on the soma.</li>
+  <li> Soma, the cell body, contain the &quot;normal&quot; cellular functions</li>
+  <li> Axon, the output of the neuron, may be branched. Synapses at the ends are connected to neighboring dendrites.</li>
+</ul>
+
+The axon has an excitable membrane, gives rise to active conduction.
+Will first look at conduction in the dentrites, passive conduction.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec5">The cable equation (Chap 4.1) </h2>
+The cell typically has a potential gradient along
+its length. Radial components will be ignored.
+
+<p>
+Notation:  
+
+<ul>
+  <li> \( V_i \) and \( V_e \) are intra- and extra cellular potential</li> 
+  <li> \( I_i \) and \( I_e \) are intra- and extra cellular (axial) current</li> 
+  <li> \( r_i \) and \( r_e \) are intra- and extra cellular resistance per unit length</li> 
+</ul>
+
+$$
+\begin{equation*} r_i = \frac{R_c}{A_i}, \end{equation*}
+$$
+
+where \( R_c \) is the cytoplasmic resistivity and \( A_{i} \) is the cross sectional area of the cable.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec6">Sketch of a discrete cable </h2>
+<center><p><img src="figs/251.png" align="bottom" width=800></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec7">Curents are assumed to be Ohmic </h2>
+Current flowing from one point to the next is proportional to the voltage difference between the points:
+
+$$
+\begin{equation*}V_i(x+\Delta x) - V_i(x) = - I_i(x) r_i \Delta x \end{equation*}
+$$
+
+
+$$
+\begin{equation*}V_e(x+\Delta x) - V_e(x) = - I_e(x) r_e \Delta x \end{equation*}
+$$
+
+In the limit we have:
+
+$$
+\begin{equation*}
+I_i = - \frac{1}{r_i}  \frac{\partial V_i}{\partial x}
+\mbox{ and }
+I_e = - \frac{1}{r_e}  \frac{\partial V_e}{\partial x}
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec8">Conservation of current (1) </h2>
+Any current leaving the intracellular domain has to enter the extracellular domain, and vice-versa. Total
+current is conserved between \( x \) and \( x+\Delta x \):
+$$
+I_i(x) - I_i(x+\Delta x) = -(I_e(x) -  I_e(x+\Delta x)) = I_t \Delta x,
+$$
+
+where \( I_t \) is transmembrane current, per unit length.
+
+<p>
+Again, taking the limit \( \Delta x \longrightarrow 0 \) yields:
+$$
+\begin{equation*} I_t = - \frac{\partial I_i}{\partial x} = \frac{\partial I_e}{\partial x} \end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec9">Conservation of current (2) </h2>
+We now have the membrane current \( I_t \) expressed in terms of \( I_i, I_e \). We want a relation between 
+the \( I_t \) and the membrane potential \( V \).
+$$  \frac{1}{r_e}  \frac{\partial^2 V_e}{\partial x^2} =  - \frac{1}{r_i}  \frac{\partial^2 V_i}{\partial x^2} =  - \frac{1}{r_i} (  \frac{\partial^2 V}{\partial x^2}+  \frac{\partial^2 V_e}{\partial x^2})
+$$
+
+
+$$
+\begin{equation*}  (\frac{1}{r_e}+ \frac{1}{r_i}) \frac{\partial^2 V_e}{\partial x^2} =  - \frac{1}{r_i}  \frac{\partial^2 V}{\partial x^2} \end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec10">Conservation of current (3) </h2>
+$$  (\frac{1}{r_e}+ \frac{1}{r_i}) \frac{\partial^2 V_e}{\partial x^2} =  - \frac{1}{r_i}  \frac{\partial^2 V}{\partial x^2} $$
+
+
+$$
+\begin{equation*}
+\frac{\partial^2 V_e}{\partial x^2} = - \frac{ \frac{1}{r_i} }{\frac{1}{r_e}+ \frac{1}{r_i}} \frac{\partial^2 V}{\partial x^2} =-\frac{r_e}{r_e+r_i}\frac{\partial^2 V}{\partial x^2}
+\end{equation*}
+$$
+
+so
+$$
+\begin{equation*}
+I_t = \frac{\partial I_e}{\partial x} =  -  \frac{1}{r_e}  \frac{\partial^2 V_e}{\partial x^2}=   \frac{1}{r_e+r_i}\frac{\partial^2 V}{\partial x^2}
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec11">Incorporating cell membrane physiology </h2>
+From the membrane model previously derived we have
+$$
+I_t = p(C_m\frac{\partial V}{\partial t}+I_{ion}) 
+$$
+
+where \( p \) is the circumference of the cable. The total 
+expression will be in Ampere/meter.
+
+<p>
+The total 1D cable model is then:
+
+$$
+\begin{equation*} p(C_m\frac{\partial V}{\partial t} +I_{ion}(V))= (\frac{1}{r_e+r_i} \frac{\partial^2 V}{\partial x^2})
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec12">Physical units </h2>
+So far we have disregarded physical units in the equation. Typical units are
+
+<p>
+<table border="1">
+<thead>
+<tr><th align="center">   Quantity  </th> <th align="center"> Dimension  </th> <th align="center">      Typical unit     </th> </tr>
+</thead>
+<tbody>
+<tr><td align="right">   \( p \)          </td> <td align="right">   length          </td> <td align="right">   cm                         </td> </tr>
+<tr><td align="right">   \( C_m \)        </td> <td align="right">   capac./area     </td> <td align="right">   \( \mu \) F/cm \( ^2 \)    </td> </tr>
+<tr><td align="right">   \( V \)          </td> <td align="right">   voltage         </td> <td align="right">   mV                         </td> </tr>
+<tr><td align="right">   \( I_{ion} \)    </td> <td align="right">   current/area    </td> <td align="right">   \( \mu \) A/cm \( ^2 \)    </td> </tr>
+<tr><td align="right">   \( r_i,r_e \)    </td> <td align="right">   res./length     </td> <td align="right">   10 \( ^3\Omega \) cm       </td> </tr>
+<tr><td align="right">   \( x \)          </td> <td align="right">   length          </td> <td align="right">   cm                         </td> </tr>
+<tr><td align="right">   \( t \)          </td> <td align="right">   time            </td> <td align="right">   ms                         </td> </tr>
+</tbody>
+</table>
+<p>
+<!-- !split -->
+
+<h2 id="___sec13">Exercise </h2>
+Verify that all terms in the cable equation have the same physical units:
+$$
+\begin{equation*} p(C_m\frac{\partial V}{\partial t} +I_{ion}(V))= (\frac{1}{r_e+r_i} \frac{\partial^2 V}{\partial x^2})
+\end{equation*}
+$$
+
+<table border="1">
+<thead>
+<tr><th align="center">   Quantity  </th> <th align="center"> Dimension  </th> <th align="center">      Typical unit     </th> </tr>
+</thead>
+<tbody>
+<tr><td align="right">   \( p \)          </td> <td align="right">   length          </td> <td align="right">   cm                         </td> </tr>
+<tr><td align="right">   \( C_m \)        </td> <td align="right">   capac./area     </td> <td align="right">   \( \mu \) F/cm \( ^2 \)    </td> </tr>
+<tr><td align="right">   \( V \)          </td> <td align="right">   voltage         </td> <td align="right">   mV                         </td> </tr>
+<tr><td align="right">   \( I_{ion} \)    </td> <td align="right">   current/area    </td> <td align="right">   \( \mu \) A/cm \( ^2 \)    </td> </tr>
+<tr><td align="right">   \( r_i,r_e \)    </td> <td align="right">   res./length     </td> <td align="right">   10 \( ^3\Omega \) cm       </td> </tr>
+<tr><td align="right">   \( x \)          </td> <td align="right">   length          </td> <td align="right">   cm                         </td> </tr>
+<tr><td align="right">   \( t \)          </td> <td align="right">   time            </td> <td align="right">   ms                         </td> </tr>
+</tbody>
+</table>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec14">Scaling the cable equation (1) </h2>
+We can scale the variables to reduce the number of parameters.
+Define a membrane resistance:
+
+$$
+\begin{equation*} \frac{1}{R_m} = \frac{\Delta I_{ion}}{\Delta V}(V_0) \end{equation*}
+$$
+
+where \( V_0 \) is the resting potential. Multiplication with \( R_m \)
+
+$$
+\begin{equation*} C_m R_m \frac{\partial V}{\partial t} + R_m I_{ion}=
+\frac{R_m}{p(r_i+r_e)}\frac{\partial^2 V}{\partial x^2} \end{equation*}
+$$
+
+Here we have assumed \( r_i \) and \( r_e \) constant.
+
+<p>
+Defining \( f=-R_m I_{ion} \), \( \tau_m=C_m R_m \) (time constant)
+and \( \lambda_m^2 = R_m/(p(r_i+r_e)) \) (space constant squared)
+we can write
+$$
+\begin{equation}
+\tau_m \frac{\partial V}{\partial t} - f=\lambda_m^2 \frac{\partial^2 V}{\partial x^2} \label{that} 
+\end{equation} 
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec15">Scaling the cable equation (2) </h2>
+Introduce the dimensionless variables:
+
+$$
+\begin{equation*} T = t/\tau_m \mbox{ and } X = x/\lambda_m \end{equation*}
+$$
+
+We can then write:
+$$
+\begin{equation}
+\frac{\partial V}{\partial T} = f + \frac{\partial^2 V}{\partial X^2}
+\label{this} \end{equation}
+$$
+
+A solution \( \hat{V}(T,X) \) of \eqref{this} will imply that
+\( V(t,x) = \hat{V}(t/\tau_m,x/\lambda_m) \) will satisfy \eqref{that}.
+
+<p>
+The scaled equation has units of voltage, but can easily be non-dimensjonalized by introducing 
+\( V=V_0+ \bar{V}\tilde{V} \), where \( \bar{V} \) is a characteristic voltage and 
+\( \tilde{V} \) is a dimensionless variable.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec16">The reaction term (Chapter 4.2,6.2,6.3) </h2>
+The form of \( f \) depends on the cell type we want to study. 
+For the axon \( I_{ion}(m,n,h,V) \) of the HH-model is
+a good candidate. 
+For the dendrite, which is non-excitable, a linear resistance
+model is good. Shift \( V \) so \( V=0 \) is the resting potential:
+
+$$
+\begin{equation*} \frac{\partial V}{\partial T} = \frac{\partial^2 V}{\partial X^2} - V \end{equation*}
+$$
+
+We need boundary and initial values. Initially at rest:
+
+$$
+\begin{equation*} V(X,0) = 0 \end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec17">Boundary conditions </h2>
+Types of boundary conditions:
+
+<ul>
+  <li> Dirichlet: \( V(x_b,T) = V_b \), voltage clamp.</li>
+  <li> Neumann: \( \frac{\partial V}{\partial x} = -r_i I_i \) (or \( \frac{\partial V}{\partial X} = -r_i \lambda_m I_i \)),  current injection.</li>
+</ul>
+
+Justification:
+$$
+\begin{equation*}\frac{\partial V_i}{\partial x}= -r_i I_i \Rightarrow  
+\frac{\partial V }{\partial x} - \frac{\partial V_e}{\partial x} = -r_i I_i
+\stackrel{r_e=0}{\Longrightarrow} \frac{\partial V }{\partial x}= -r_i I_i \end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec18">Passive condition (1) </h2>
+The linear cable in dimensionless form:
+$$
+\begin{equation*} \frac{\partial V}{\partial T} = \frac{\partial^2 V}{\partial X^2} - V \end{equation*}
+$$
+
+Set \( V(0) \) = 0
+
+<p>
+We consider a semi-infinite (i.e. long) cable with voltage clamped to \( V_{c} \) at \( X=0 \). We have 
+the equation 
+$$
+\begin{equation*}
+ \frac{\partial^2 V}{\partial X^2} = V \end{equation*}
+$$
+
+with solution
+$$
+\begin{equation*} V = V_c e^{-X} = V_c e^{-x/\lambda_m}
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec19">Passive conduction (2) </h2>
+We can compute the space constant for the passive case
+$$
+\lambda_m = \sqrt{R_m/(p(r_i+r_e))} \approx \sqrt{R_m/(p r_i)} 
+= \sqrt{R_m/(p R_c/A)},
+$$
+
+where we recall that \( R_c, A_i \) are sytosolic resistance and cross sectional area.
+If the cross section is circular with diameter \( d \), we have
+$$
+\lambda_m =\sqrt{R_m/(p R_c/A)} = \sqrt{R_m(\pi d R_c/(\pi(d/2)^2))} = 
+\sqrt{\frac{R_m d}{4R_c}} 
+$$
+
+Typical values for a mammalian neuron; 
+$ R_m = 7000 \Omega $ cm \( ^{2}, R_c = 150 \Omega \) cm, \( d=10.0\mu \) m, gives 
+\( \lambda_m \approx 1.0 \) mm. A human axon can be up to a meter long.
+
+<p>
+<!-- !split  -->
+
+<h2 id="___sec20">The bistable equation (Chapter 6.2.1) (1) </h2>
+The simplest model of active conduction in neuron is obtained by choosing
+the reaction term
+$$
+f(V) = AV(1-V)(V-\alpha),
+$$
+
+where \( \alpha \) is a parameter between 0 and 1, and \( A \) is a scaling parameter
+for the reaction term.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec21">The bistable equation (2) </h2>
+We have 
+$$
+\frac{\partial V}{\partial t} = \frac{\partial^2 V}{\partial x^2}+ AV(1-V)(V-\alpha),
+$$
+
+and if we neglect the diffusion term we get
+$$
+\frac{\partial V}{\partial t} =  AV(1-V)(V-\alpha),
+$$
+
+The right hand side has three zero's; \( V=0, V=1, V=\alpha \). These are equilibrium points for 
+the equation (\( \partial V/\partial t = 0 \)).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec22">The bistable equation (3) </h2>
+<center><p><img src="figs/cubic.png" align="bottom" width=800></p></center>
+
+<p>
+Here \( \alpha = 0.5 \).What happens if the solution is perturbed away from the three equilibrium 
+points \( V=0, V=1, V=\alpha \)? (Recall that \( dV/dt = f(V) \))
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec23">The bistable equation (4) </h2>
+
+<ul>
+  <li> The equation has one unstable and two unstable equilibrium points</li>
+  <li> Any initial condition \( V < \alpha \) will approach \( V=0 \)</li>
+  <li> Any initial condition \( V > \alpha \) will approach \( V=1 \)</li>
+  <li> In 1D (with diffusion), the solution is a traveling front (demo)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec24">The FitzHugh-Nagumo model (1) </h2>
+
+<ul>
+  <li> The bistable equation describes a traveling front, but never returns to the resting potential</li>
+  <li> To describe a propagating action potential we need to add a <em>recovery variable</em></li>
+  <li> The result is the Fitzhugh-Nagumo (FHN) model, the simplest model for qualitatively realistic propagation in excitable cells</li>
+</ul>
+
+$$
+\begin{align}
+\frac{\partial V}{\partial t} &= \frac{\partial^2 V}{\partial x^2} + f(V)-w \nonumber \\
+\frac{\partial w}{\partial t} &= \epsilon (V-\gamma w), \nonumber 
+\end{align}
+$$
+
+with \( \epsilon,\gamma > 0 \), and \( w(0) =0 \).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec25">The FitzHugh-Nagumo model (2) </h2>
+Again, we can examine the behavior of the model by neglecting diffusion:
+$$
+\begin{align}
+\frac{\partial V}{\partial t} &=  f(V)-w \nonumber \\
+\frac{\partial w}{\partial t} &= \epsilon (V-\gamma w). \nonumber 
+\end{align}
+$$
+
+
+<ul>
+  <li> Initially, the model behaves as the bistable equation</li>
+  <li> As \( V \) increases, \( \frac{\partial w}{\partial t}> 0 \)</li>
+  <li> \( w>0 \) will "pull" \( V \) back towards \( V=0 \)</li>
+  <li> In 1D, the solution is a traveling wave resembling an action potential (demo)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec26">Conduction in cardiac tissue (1) </h2>
+
+<ul>
+  <li> Neurons are long, cardiac muscle cells are only about 0.1mm</li>
+  <li> How is the electrical signal conducted in cardiac tissue?</li>
+  <li> Can cardiac conduction be described using similar models as the cable equation?</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec27">Conduction in cardiac tissue (2) </h2>
+
+<ul>
+  <li> Cardiac myocytes are connected end-to-end, and form fiber-like tissue structure</li>
+  <li> The structure has important implications both for mechanical and electrical properties of the tissue</li>
+  <li> Electrical conduction between cells is mediated by <em>gap junctions</em></li>
+</ul>
+
+<center><p><img src="figs/fiber_sheet.png" align="bottom" width=500></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec28">Gap junctions </h2>
+
+<p>
+<center><p><img src="figs/gap_junctions.png" align="bottom" width=500></p></center>
+
+<ul>
+  <li> Gap junctions are located between cells, and ions may pass through them.</li>
+  <li> The junctions have a high resistance to flow compared to the intra cellular environment</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec29">Effective conductivity (1) </h2>
+Consider a 1D line of cell and 
+assume that Fick's law holds in the interior:
+$$ J = - D \frac{dc}{dx} $$
+
+Between cells we must have continuity of flow:
+$$ -D\frac{dc(x^-_b)}{dx} =  -D\frac{dc(x^+_b)}{dx} $$
+
+Here \( x^-_b \) and \( x^+_b \) indicates that the function  
+is evaluated in the limit from left and right, respectively.
+
+<p>
+Furthermore we assume this flow to be proportional to the fall:
+$$ J = F[c(x^-_b)-c(x^+_b)] $$
+
+where \( F \) is a permeability constant.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec30">Effective conductivity (2) </h2>
+We would like to relate \( F \) and \( D \) into an average, large scale,
+effective diffusion coefficient. Consider \( N \) cells of 
+length \( L \):
+$$ J = -D_e \frac{\Delta c}{\Delta x} = -D_e \frac{c_1-c_0}{NL} $$
+
+
+<ul>
+  <li> Steady flux with fixed gradient.</li> 
+  <li> At steady state \( J \) is constant, so from \( J = - D (dc/dx) \) we have that \( c \) is linear in the interior. The solution \( c \) will be piecewise linear with jump at the cell boundaries.</li>
+  <li> Continuity of flow over the gaps gives \( dc/dx = -\lambda \) for all interfaces.</li>
+  <li> For the same reason the steps must all be equal, \( c(x^-_b)-c(x^+_b)=\Delta \).</li>
+</ul>
+
+<!-- !split  -->
+
+<h2 id="___sec31">Effective conductivity (3) </h2>
+The size of \( \Delta \) and \( \lambda \) must fit the drop \( (c_0-c_1) \):
+
+<ul>
+  <li> \( N \) intervals of length L: \( NL\lambda \)</li> 
+  <li> \( N \) jumps of size \( \Delta \): \( N\Delta \)</li> 
+</ul>
+
+So in total we must have: 
+$$ NL\lambda + N\Delta = c_0-c_1 $$
+
+From the definition of \( F \) we have \( D\lambda = F\Delta \). 
+In steady state the flux is the same on every scale:
+$$
+\begin{align*}
+J &= D\lambda = \frac{D_e}{NL}(c_0-c_1) = \frac{D_e}{NL}(NL\lambda + N\Delta) \\
+&= \frac{D_e}{NL}(NL\lambda +N\frac{D\lambda}{F}) = D_e \lambda(1+\frac{D}{FL})
+\end{align*}
+$$
+
+So 
+$$  
+D = D_e (1+\frac{D}{FL}) \Rightarrow \frac{1}{D_e}=\frac{1}{D}+\frac{1}{FL}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec32">Summary </h2>
+
+<ul>
+  <li> The cable equation describes electrical signals in <em>leaky</em> cables</li>
+  <li> 1D reaction-diffusion equation, the form of the reaction term depends on the properties of the membrane:</li>
+
+<ul>
+    <li> Linear; passive membrane</li>
+    <li> Cubic; bistable equation (propagating front)</li>
+    <li> Fitzhugh-Nagumo; coupled to ODE (propagating AP)</li>
+</ul>
+
+  <li> Cardiac tissue can be modeled with a similar approach because of <em>gap junctions</em></li>
+  <li> Monodomain and bidomain models of cardiac conduction; 3D extensions of cable equation</li>
+</ul>
+
+
+<!-- ------------------- end of main content --------------- -->
+
+
+</body>
+</html>
+    
+
