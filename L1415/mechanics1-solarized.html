@@ -1,0 +1,914 @@
+<!--
+Automatically generated HTML file from DocOnce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="DocOnce: https://github.com/hplgit/doconce/" />
+<meta name="description" content="Fundamental cardiac mechanics \\ Part I: Ode models of circulation and cell contraction">
+
+<title>Fundamental cardiac mechanics \\ Part I: Ode models of circulation and cell contraction</title>
+
+
+<link href="https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_styles/style_solarized_box/css/solarized_light_code.css" rel="stylesheet" type="text/css" title="light"/>
+<script src="https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_styles/style_solarized_box/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="http://thomasf.github.io/solarized-css/solarized-light.min.css" rel="stylesheet">
+<style type="text/css">
+h1 {color: #b58900;}  /* yellow */
+/* h1 {color: #cb4b16;}  orange */
+/* h1 {color: #d33682;}  magenta, the original choice of thomasf */
+code { padding: 0px; background-color: inherit; }
+pre {
+  border: 0pt solid #93a1a1;
+  box-shadow: none;
+}
+
+div { text-align: justify; text-justify: inter-word; }
+</style>
+
+
+</head>
+
+<!-- tocinfo
+{'highest level': 2,
+ 'sections': [(u'Outline', 2, None, '___sec0'),
+              (u'Overview of cardiac function (1)', 2, None, '___sec1'),
+              (u'The four phases of the heart cycle', 2, None, '___sec2'),
+              (u'The pressure-volume loop', 2, None, '___sec3'),
+              (u'Why model all this?', 2, None, '___sec4'),
+              (u'How can it be modeled?', 2, None, '___sec5'),
+              (u'Modeling the heart and circulation', 2, None, '___sec6'),
+              (u'The circulatory system', 2, None, '___sec7'),
+              (u'Important quantities (1)', 2, None, '___sec8'),
+              (u'Important quantities (2)', 2, None, '___sec9'),
+              (u'Resistance and compliance vessels', 2, None, '___sec10'),
+              (u'Resistance vessels', 2, None, '___sec11'),
+              (u'Compliance vessels', 2, None, '___sec12'),
+              (u'Vessels in the circulation', 2, None, '___sec13'),
+              (u'The heart as a compliance vessel (1)', 2, None, '___sec14'),
+              (u'The heart as a compliance vessel (2)', 2, None, '___sec15'),
+              (u'Modeling the heart valves (1)', 2, None, '___sec16'),
+              (u'Modeling the heart valves (2)', 2, None, '___sec17'),
+              (u'Modeling the heart valves (3)', 2, None, '___sec18'),
+              (u'Circulation dynamics (1)', 2, None, '___sec19'),
+              (u'Circulation dynamics (2)', 2, None, '___sec20'),
+              (u'Circulation dynamics (3)', 2, None, '___sec21'),
+              (u'A simple model (1)', 2, None, '___sec22'),
+              (u'A simple model (2)', 2, None, '___sec23'),
+              (u'A simple model (3)', 2, None, '___sec24'),
+              (u'A more realistic model (1)', 2, None, '___sec25'),
+              (u'A more realistic model (2)', 2, None, '___sec26'),
+              (u'A more realistic model (3)', 2, None, '___sec27'),
+              (u'Exercise/tutorial', 2, None, '___sec28'),
+              (u'Summary', 2, None, '___sec29'),
+              (u'Multiscale mechanical models', 2, None, '___sec30'),
+              (u'Modeling cardiac cell contraction', 2, None, '___sec31'),
+              (u'Three main groups of muscle cells', 2, None, '___sec32'),
+              (u'Striated muscle cells', 2, None, '___sec33'),
+              (u'Overlapping thin and thick filaments', 2, None, '___sec34'),
+              (u'Force regulation', 2, None, '___sec35'),
+              (u'The cross-bridge cycle (1)', 2, None, '___sec36'),
+              (u'The cross-bridge cycle (2)', 2, None, '___sec37'),
+              (u'Many factors affect force development', 2, None, '___sec38'),
+              (u'Important quantities', 2, None, '___sec39'),
+              (u'Force-velocity relations (1)', 2, None, '___sec40'),
+              (u'Force-velocity relations (2)', 2, None, '___sec41'),
+              (u'A typical Hill-curve', 2, None, '___sec42'),
+              (u'Summary of model requirements', 2, None, '___sec43'),
+              (u'An example model; Rice et al (2008)', 2, None, '___sec44'),
+              (u'The model has eight main state variables',
+               2,
+               None,
+               '___sec45'),
+              (u'Two ODEs describe calcium binding and detachment',
+               2,
+               None,
+               '___sec46'),
+              (u'Six ODEs describe cross-bridge (XB) cycling',
+               2,
+               None,
+               '___sec47'),
+              (u'Only strongly-bound XBs develop force', 2, None, '___sec48'),
+              (u'Cross bridge distortion comes from two sources',
+               2,
+               None,
+               '___sec49'),
+              (u'Demo of classical cell mechanics experiments',
+               2,
+               None,
+               '___sec50'),
+              (u'Coupling to electrophysiology', 2, None, '___sec51')]}
+end of tocinfo -->
+
+<body>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "AMS"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+</script>
+<script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+    
+<!-- ------------------- main content ---------------------- -->
+
+
+
+<center><h1>Fundamental cardiac mechanics \\ Part I: Ode models of circulation and cell contraction</h1></center>  <!-- document title -->
+
+<p>
+<!-- author(s): Joakim Sundnes -->
+
+<center>
+<b>Joakim Sundnes</b> 
+</center>
+
+<p>
+<!-- institution(s) -->
+
+<br>
+<p>
+<center><h4>Jun 17, 2016</h4></center> <!-- date -->
+<br>
+<p>
+<!-- !split -->
+
+<h2 id="___sec0">Outline </h2>
+
+<ul>
+  <li> The heart as a pump</li>
+
+<ul>
+    <li> The pressure volume loop</li>
+    <li> Phases of the cardiac cycle</li>
+    <li> Elastance models of the heart and circulation</li>
+</ul>
+
+  <li> Introduction to sliding filament theory</li>
+
+<ul>
+    <li> Micro-structure of force development</li>
+    <li> Cross-bridge cycling</li>
+    <li> Regulation of force</li>
+    <li> Models of cell contraction</li>
+</ul>
+
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec1">Overview of cardiac function (1) </h2>
+<center><p><img src="figs/Wiggers_diagram.svg" align="bottom" width=800></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec2">The four phases of the heart cycle </h2>
+
+<ul>
+  <li> Passive filling; the muscle is relaxed and is filled with blood from the  venous system (and the atria). Increase of pressure (small) and volume (large)</li>
+  <li> Isovolumic contraction; the heart muscle contracts while all valves are  closed. The cavity pressure increases while the volume stays constant</li>
+  <li> Ejection; the valves open to allow blood to be ejected into the arteries. Pressure increases at first, then drops. Volume decrases</li>
+  <li> Isovolumic relaxation; the muscle is relaxing while all valves are closed.  The volume remains constant while the pressure drops</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec3">The pressure-volume loop </h2>
+<center><p><img src="figs/pv_loop.png" align="bottom" width=400></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec4">Why model all this? </h2>
+
+<ul>
+  <li> Understand fundamental mechanisms</li>
+  <li> Investigate pathologies and interventions:</li>
+
+<ul>
+    <li> What happens if ...?</li>
+</ul>
+
+  <li> Linking cell level processes to overall heart function (advanced)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec5">How can it be modeled? </h2>
+
+<ul>
+  <li> Top-down (Today (June 17), morning lecture):</li>
+
+<ul>
+    <li> Derive relations for macroscopic function of the heart and other parts of the circulatory system</li> 
+</ul>
+
+  <li> Bottom-up/multiscale (Late morning/afternoon):</li>
+
+<ul>
+    <li> Model the biophysics of cell contraction</li>
+    <li> Integrate into tissue/organ models</li>
+    <li> Couple to models of circulation</li>
+</ul>
+
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec6">Modeling the heart and circulation </h2>
+
+<ul>
+  <li> Overview of the circulatory system</li>
+  <li> Important quantities</li>
+  <li> Resistance and compliance vessels</li>
+  <li> Models for the circulatory system</li>
+  <li> Examples and extensions</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec7">The circulatory system </h2>
+<center><p><img src="figs/circulation.png" align="bottom" width=600></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec8">Important quantities (1) </h2>
+
+<ul>
+  <li> Heart rate, measured in beats per minute.</li>
+  <li> Cardiac output: The rate of blood flow through the circulatory system, measured in liters/minute.</li>
+  <li> Stroke volume: the difference between the end-diastolic volume and the end-systolic volume, i.e. the volume of blood ejected from the heart during a heart beat, measured in liters.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec9">Important quantities (2) </h2>
+The cardiac ouput \( Q \) is given by
+$$
+\begin{equation*}
+Q = FV_{stroke}
+\end{equation*}
+$$
+
+Typical values:
+
+<ul>
+  <li> \( F= 80 \) beats/minute.</li>
+  <li> \( V_{stroke} = 70\textrm{cm}^3/\textrm{beat} \) = 0.070 liters/beat.</li>
+  <li> \( Q = 5.6 \) liters/minute.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec10">Resistance and compliance vessels </h2>
+<center><p><img src="figs/vessel.png" align="bottom" width=800></p></center>
+
+<ul>
+  <li> \( V = \) vessel volume,</li>
+  <li> \( P_{ext} =  \) external pressure,</li>
+  <li> \( P_1 =  \) upstream pressure,</li>
+  <li> \( P_2 =  \) downstream pressure,</li>
+  <li> \( Q_1 =  \) inflow,</li>
+  <li> \( Q_2 =  \) outflow.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec11">Resistance vessels </h2>
+Assume that the vessel is rigid, so that \( V \) is constant. Then we have
+
+$$
+\begin{equation*}
+Q_1 = Q_2 = Q_* .
+\end{equation*}
+$$
+
+The flow through the vessel will depend on the pressure drop through the
+vessel. The simplest assumption is that \( Q_* \) is a linear function of
+the pressure difference \( P_1 -P_2 \):
+
+$$
+\begin{equation*}
+Q_* = \frac{P_1 -P_2}{R},
+\end{equation*}
+$$
+
+where \( R \) is the resistance of the vessel.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec12">Compliance vessels </h2>
+Assume that the resistance over the vessel is negligible. This gives
+
+$$
+\begin{equation*}
+P_1 = P_2 = P_*
+\end{equation*}
+$$
+
+Assume further that the volume depends on the pressure \( P_* \). We assume the
+simple linear relation
+
+$$
+\begin{equation*}
+V = V_d + CP_* ,
+\end{equation*}
+$$
+
+where \( C \) is the compliance of the vessel and \( V_d \) is the &quot;dead volume&quot;,
+the volume at \( P_*=0 \).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec13">Vessels in the circulation </h2>
+
+<ul>
+  <li> All blood vessels can be viewed as either resistance vessels or  compliance vessels. (This is a reasonable assumption, although all vessels have both compliance and resistance.)</li>
+  <li> Large arteries and veins; negligible resistance, significant compliance.</li>
+  <li> Arterioles and capillaries; negligible compliance, significant resistance.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec14">The heart as a compliance vessel (1) </h2>
+The heart may be viewed as a pair of compliance vessels, where
+the compliance changes with time,
+
+$$
+\begin{equation*}
+V(t) = V_d+C(t)P .
+\end{equation*}
+$$
+
+The function \( V(t) \) should be specified so that it takes on a large
+value \( C_{diastole} \) when the heart is relaxed, and a small value
+\( C_{systole} \) when the heart contracts.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec15">The heart as a compliance vessel (2) </h2>
+<center><p><img src="figs/c_now.png" align="bottom" width=800></p></center>
+
+<p>
+From Hoppensteadt &amp; Peskin, Modeling and Simulation in Medicine and the Life Sciences, Springer 2002.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec16">Modeling the heart valves (1) </h2>
+Characteristic properties of a heart valve:
+
+<ul>
+  <li> Low resistance for flow in the &quot;forward&quot; direction.</li>
+  <li> High resistance for flow in the &quot;backward&quot; direction.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec17">Modeling the heart valves (2) </h2>
+The operation of the valve can be seen as a switching function that depends
+on the pressure difference across the valve. The switching function can 
+be expressed as
+
+$$
+\begin{equation*}
+S= \left\{
+\begin{array}{ll}
+1 &\textrm{if} P_1 >P_2 \\
+0 &\textrm{if} P_1 < P_2 
+\end{array}\right.
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec18">Modeling the heart valves (3) </h2>
+The flow through the valve can be modeled as flow through a resistance
+vessel multiplied by the switching function. We have
+
+$$
+\begin{equation*}
+Q_* = \frac{(P_1 -P_2)S}{R},
+\end{equation*}
+$$
+
+where \( R \) will typically be very low for a healthy valve.
+<!-- !split -->
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec19">Circulation dynamics (1) </h2>
+For a compliance vessel that is not in steady state, we have
+$$
+\begin{equation*}
+\frac{dV}{dt} = Q_1-Q_2 .
+\end{equation*}
+$$
+
+If we assume the vessel is connected to resistance vessels, the
+flows are given by 
+$$
+\begin{equation*}
+Q_j = \frac{P^{in}-P^{out}}{R_j} .
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec20">Circulation dynamics (2) </h2>
+The flows \( Q_j \) depend on the pressures, which can be computed from the
+linear pressure-volume relation:
+$$
+P_i = (V_i -V_{d,i})/C_i ,
+$$
+
+where \( V_{d,i},C_i \) are the unloaded volume and the compliance for vessel \( i \). These are assumed constant for arteries and veins, and time dependent for the heart.
+
+<p>
+Another common formulation is to use the elastance instead of the compliance, \( E_i = 1/C_i \), which gives
+$$
+P_i =  E_i(V_i -V_{d,i}),
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec21">Circulation dynamics (3) </h2>
+The circulatory system can now be viewed as a set of compliance vessels
+connected by valves and resistance vessels. For each compliance vessel we have
+
+$$
+\begin{equation*}
+\frac{V_i}{dt} = Q_i^{in}-Q_i^{out} ,
+\end{equation*}
+$$
+
+with flows given by
+$$
+\begin{align*}
+Q_i^{in} &= \frac{P_{i-1}-P_{i}}{R_{i-1,i}} =  \frac{E_{i-1}(V_{i-1} -V_{d,{i-1}})-E_{i}(V_{i} -V_{d,{i}})}{R_{i-1,i}}\\
+Q_i^{out} &= \frac{P_{i}-P_{i+1}}{R_{i,i+1}} =  \frac{E_{i}(V_{i} -V_{d,{i}})-E_{i+1}(V_{i+1} -V_{d,{i+1}})}{R_{i,i+1}}
+\end{align*}
+$$
+
+where we have introduced \( R_{i,i+1} \) to denote the resistance between vessel \( i \) and vessel \( i+1 \).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec22">A simple model (1) </h2>
+Consider first a simple model consisting of three compliance vessels; the
+left ventricle, the systemic arteries, and the systemic veins. These are
+connected by two valves, and a resistance vessel describing the flow through
+the systemic tissues. 
+<center><p><img src="figs/simple_circ.png" align="bottom" width=800></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec23">A simple model (2) </h2>
+For the left ventricle we have
+
+$$
+\begin{equation*}
+\frac{dV_{lv}}{dt} = Q^{in} -Q^{out} ,
+\end{equation*}
+$$
+
+with \( Q^{in} \) and \( Q^{out} \) given by
+
+$$
+\begin{align*}
+Q_{in} &= \frac{S_{mi}(P_{sv}-P_{lv})}{R_{mi}} , \\
+Q_{out} &= \frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}} .
+\end{align*}
+$$
+
+<p>
+We get
+$$
+\begin{equation*}
+\frac{dV_{lv}}{dt} =  \frac{P_{sv}-P_{lv}}{S_{mi}R_{mi}} -
+\frac{P_{lv}-P_{sa}}{S_{ao}R_{ao}},
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec24">A simple model (3)  </h2>
+Similar calculations for the two other compliance vessels gives the system
+$$
+\begin{align*}
+\frac{dV_{lv}}{dt} &=  \frac{S_{mi}(P_{sv}-P_{lv})}{R_{mi}} -
+\frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}}, \\
+\frac{d V_{sa}}{dt} &=  \frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}} -
+\frac{P_{sa}-P_{sv}}{R_{sys}}, \\
+\frac{dV_{sv}}{dt} &= \frac{P_{sa}-P_{sv}}{R_{sys}} -
+\frac{S_{mi}(P_{sv}-P_{lv})}{R_{mi}}.
+\end{align*}
+$$
+
+With the pressures given by relations \( P_i = E_i(V_i-V{d,i}) \)
+To have a solvable system we need to specify parameters 
+\( R_{mi}, R_{ao}, R_{sys}, C_{sa}, C_{sv} \) and the function \( C_{lv}(t) \).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec25">A more realistic model (1) </h2>
+The model can easily be improved to a more realistic model describing six
+compliance vessels:
+
+<ul>
+  <li> The left ventricle, \( V_{lv}, E_{lv}(t) \),</li>
+  <li> the right ventricle, \( V_{rv}, E_{rv}(t) \),</li>
+  <li> the systemic arteries, \( V_{sa}, E_{sa} \),</li>
+  <li> the systemic veins, \( V_{sv}, E_{sv} \),</li>
+  <li> the pulmonary arteries, and \( V_{pa}, E_{pa} \), and</li>
+  <li> the pulmonary veins, \( V_{pv}, E_{pv} \).</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec26">A more realistic model (2) </h2>
+The flows are governed by two resistance vessels and four valves:
+
+<ul>
+  <li> Systemic circulation, \( R_{sys} \),</li>
+  <li> pulmonary circulation, \( R_{pu} \),</li>
+  <li> aortic valve (left ventricle to systemic arteries), \( R_{ao}, S_{ao} \),</li>
+  <li> tricuspid valve (systemic veins to right ventricle), \( R_{tri}, S_{tri} \),</li>
+  <li> pulmonary valve (right ventricle to pulmonary arteries), \( R_{puv}, S_{puv} \),</li>
+  <li> mitral valve (pulmonary veins to left ventricle) ,$R_{mi}, S_{mi}$.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec27">A more realistic model (3) </h2>
+This gives the ODE system
+$$
+\begin{align*}
+\frac{V_{lv}}{dt} &=  \frac{S_{mi}(P_{sv}-P_{lv})}{R_{mi}} -
+\frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}}, \\
+\frac{dV_{sa}}{dt} &=  \frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}} -
+\frac{P_{sa}-P_{sv}}{R_{sys}}, \\
+\frac{dV_{sv}}{dt} &= \frac{P_{sa}-P_{sv}}{R_{sys}} -
+\frac{S_{tri}(P_{sv}-P_{rv})}{R_{tri}}, \\
+\frac{dV_{rv}}{dt} &=  \frac{S_{tri}(P_{sv}-P_{rv})}{R_{tri}} -
+\frac{S_{puv}(P_{rv}-P_{pa})}{R_{puv}}, \\
+\frac{dV_{pa}}{dt} &=  \frac{S_{puv}(P_{rv}-P_{pa})}{R_{puv}} -
+\frac{P_{pa}-P_{pv}}{R_{pu}}, \\
+\frac{dV_{pv}}{dt} &=  \frac{P_{pa}-P_{pv}}{R_{pu}} -
+\frac{S_{mi}(P_{pv}-P_{lv})}{R_{mi}}.
+\end{align*}
+with pressures given by the formulas above.
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec28">Exercise/tutorial </h2>
+
+<ul>
+  <li> Python/matlab code in repo: <em>SUURPh-summer-school/L14/circ\_models</em></li> 
+  <li> Three models:</li>
+
+<ul>
+    <li> Systemic (simple three-compartment model)</li>
+    <li> circ\_no\_atria (full circulation, six compartments)</li>
+    <li> circ\_full (full circulation with atria, eight compartments)</li>
+</ul>
+
+  <li> Run two test cases:</li>
+
+<ul>
+    <li> Aortic stenosis: Increase aortic resistance from 0.5 to 50</li>
+    <li> Physical exercise: Reduce systemic resistance from 246.9382 to 50</li>
+</ul>
+
+  <li> What happens in the two cases?</li>
+  <li> Is the model response realistic?</li>
+</ul>
+
+<!-- !split  -->
+
+<h2 id="___sec29">Summary </h2>
+
+<ul>
+  <li> The entire circulation can be described using simple the building blocks of compliance and resistance vessels</li>
+  <li> Simple models fail to describe correct physiological response, but are easily extended with baroreflex and more compartments, for remarkably realistic pressure- and flow profiles (See for instance <em>http://www.physiome.org/Models/</em> )</li>
+  <li> Even with 50+ compartments, the heart is described as a time varying elastance:</li>
+
+<ul>
+    <li> Hard to relate changes on cell level to overall contractility and stiffness (elastance)</li>
+    <li> What about regional injuries such as an infarct?</li>
+</ul>
+
+  <li> Multiscale models offer another dimension of modeling, integrating from the cell level to tissue and the complete organ</li>
+</ul>
+
+<!-- !split  -->
+
+<h2 id="___sec30">Multiscale mechanical models </h2>
+
+<ul>
+  <li> Describe how the electrical signal triggers contraction of a single cell</li>
+  <li> Connect cells, embed in tissue</li>
+  <li> Couple with circulation models for flows and pressures (boundary conditions)</li> 
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec31">Modeling cardiac cell contraction </h2>
+
+<ul>
+  <li> Crossbridge theory. How do muscles contract?</li>
+  <li> A model for muscle contraction.</li>
+  <li> Coupling to electrophysilogy (excitation-contraction coupling)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec32">Three main groups of muscle cells </h2>
+
+<ul>
+  <li> Smooth muscle</li>
+  <li> Cardiac muscle</li>
+  <li> Skeletal muscle</li>
+</ul>
+
+Cardiac muscle cells are so-called striated muscles, and have very similar contractile mechanisms. Skeletal
+muscle has been most extensively studied and modeled.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec33">Striated muscle cells </h2>
+
+<ul>
+  <li> A muscle cell (cardiac or skeletal) contains smaller units called  myofibrils, which in turn are made up of sarcomeres.</li>
+  <li> The sarcomere contains overlapping  thin and thick filaments, which are responsible for the force development in the muscle cells.</li>
+</ul>
+
+<center><p><img src="figs/muscle0.png" align="bottom" width=400></p></center>
+
+<p>
+<!-- !split  -->
+
+<h2 id="___sec34">Overlapping thin and thick filaments </h2>
+
+<p>
+<center>  <!-- FIGURE -->
+<hr class="figure">
+<center><p class="caption">Figure 1:  * Thick filaments are made up of the protein myosin. The myosin molecules  have heads which form cross-bridges that interact with the thin filaments to generate force.   * Thin filaments contain the three proteins actin, tropomyosin and  troponin.   * The actin forms a double helix around a backbone formed  by tropomyosin. </p></center>
+<p><img src="figs/muscle1.png" align="bottom" width=400></p>
+</center>
+
+<p>
+<!-- !split  -->
+
+<h2 id="___sec35">Force regulation </h2>
+<center><p><img src="figs/muscle2.png" align="bottom" width=500></p></center>
+
+<ul>
+  <li> In the base configuration, tropomyosin blocks the cross-bridge binding sites on the actin.</li>
+  <li> Troponin contains binding sites for calcium, and binding of calcium causes the tropomyosin to move, exposing the actin binding sites for the cross-bridges to attach.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec36">The cross-bridge cycle (1) </h2>
+<center><p><img src="figs/muscle3.png" align="bottom" width=500></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec37">The cross-bridge cycle (2) </h2>
+After calcium has bound to the troponin to expose the binding sites, the
+force development in the muscle happens in four stages:
+
+<ul>
+  <li> An energized cross-bridge binds to actin.</li>
+  <li> The cross-bridge moves to its energetically preferred position,  pulling on the thin filament.</li>
+  <li> ATP binds to the myosin, causing the cross-bridge to detach.</li>
+  <li> Hydrolysis of ATP energizes the cross-bridge.</li>
+</ul>
+
+During muscle contraction, each cross-bridge goes through this cycle 
+repeatedly.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec38">Many factors affect force development </h2>
+
+<ul>
+  <li> Effective overlap of thick and thin filaments; overlap and force increase when cell is stretched, up to a limit</li>
+  <li> Velocity of contraction; cross-bridge cycle cannot "keep up" with high contraction rates, reducing developed tension</li>
+  <li> Cooperativity; a formed cross bridge increases the likelyhood of nearby cross-bridges to form</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec39">Important quantities </h2>
+
+<ul>
+  <li> Isometric tension (\( T_0 \)): the tension generated by a muscle contracting at a fixed length. Depends on the activation level (i.e. Ca concentration) and length (stretch) of the muscle cell</li>
+  <li> Tension (\( T \)): Tension developed during active shortening. In phenomenological models, this is often obtained by a scaling of the isometric tension: \( T = T_0 f(V) \),  where \( V \) is the rate of shortening and \( f(V) < 1 \) is some <em>force-velocity relation</em>.</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec40">Force-velocity relations (1) </h2>
+
+<ul>
+  <li> The classical equation of Hill (1938) describes the relation between  velocity and tension in a muscle that contracts against a constant load  (<em>isotonic</em> contraction): \( (T+a)V = b(T_0-T) \)</li>
+  <li> \( T_0 \) is the isometric tension and \( V \) is the velocity. \( a \) and \( b \) are parameters which are fitted to experimental data.</li>
+  <li> Recall that \( T_0 \) is constant for skeletal muscle cells, dependent on length in cardiac cells</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec41">Force-velocity relations (2) </h2>
+Velocity as function of force:
+
+$$
+\begin{equation*}
+V = b\frac{T_0-T}{T+a}
+\end{equation*}
+$$
+
+Force as function of velocity:
+
+$$
+\begin{equation*}
+T = \frac{bT_0-aV}{b+V}
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec42">A typical Hill-curve </h2>
+<center><p><img src="figs/hill_rice.png" align="bottom" width=600></p></center>
+
+<p>
+Force-velocity relation for the model by Rice et al (2008).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec43">Summary of model requirements </h2>
+A model of cell contraction must include the following:
+
+<ul>
+  <li> Calcium binding to Troponin C</li>
+  <li> Exposure of cross bridge binding sites on the actin</li>
+  <li> Cycling of cross-bridges to develop force</li>
+  <li> Force-dependence on filament overlap and contraction velocity</li>
+
+<ul>
+    <li> Often phenomenological (Hunter et al (1998), Niederer et al (2006))</li>
+    <li> Recent models are more mechanistic (Rice et al (2008), Campbell et al (2009))</li>
+</ul>
+
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec44">An example model; Rice et al (2008) </h2>
+
+<ul>
+  <li> Rice, Wang, Bers, de Tombe: <em>Approximate Model of Cooperative Activation and Crossbridge Cycling in Cardiac Muscle Using Ordinary Differential Equations</em>, Biophysical journal, 2008.</li> 
+  <li> A hybrid model;</li> 
+
+<ul>
+    <li> Some model components described in great detail and biophysical rigour</li>
+    <li> Some components deliberately simplified and phenomenological, to keep complexity at a reasonable level</li>
+</ul>
+
+  <li> Conceptually simple (but the devil is in the details)</li>
+</ul>
+
+<!-- !split     -->
+
+<h2 id="___sec45">The model has eight main state variables </h2>
+<center><p><img src="figs/rice_fig2.png" align="bottom" width=600></p></center>
+
+<p>
++ 3 mechanical (Sarcomere length and crossbridge distortions). Calcium is considered an input variable.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec46">Two ODEs describe calcium binding and detachment </h2>
+The model treats Ca binding sites with nearby cross-bridges separately from those without nearby cross-bridges:
+$$
+\begin{align*}
+\frac{dTRPN_{CaL}}{dt}  &= k_{onT} Ca_i (1 - TRPN_{CaL}) - k_{offLT} TRPN_{CaL} \\
+\frac{dTRPN_{CaH}}{dt} &= k_{onT} Ca_i (1 - TRPNCaH) - k_{offHT} TRPN_{CaH} 
+\end{align*}
+$$
+
+The sites with bound cross-bridges have a higher Ca affinitiy, represented by a lower detachment rate: \( k_{offHT} < k_{offLT} \).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec47">Six ODEs describe cross-bridge (XB) cycling </h2>
+$$
+\fontsize{9pt}{9pt}
+\begin{align*}
+\frac{dN_{NoXB}}{dt} &= k_{pnT}P_{NoXB} - k_{npT} N_{NoXB} \\
+\frac{dP_{NoXB}}{dt} &= k_{npT}N_{NoXB} - k_{pnT}P_{NoXB} \\
+\frac{dN}{dt} &= k_{pn}P - k_{npT}N \\
+\frac{dP}{dt} &= k_{npT}N -k_{pn}P - f_{appT}P + g_{appT}XB_{prer} + g_{xbT})*XB_{postr}\\ 
+\frac{dXB_{prer}}{dt} &= f_{appT}P + h_{bT}XB_{postr} - (g_{appT} + h_{fT})XB_{prer} \\
+\frac{dXB_{postr}}{dt} &= h_{fT}XB_{prer} - (h_{bT}XB_{postr} + g_{xbT})*XB_{postr}
+\end{align*}
+$$
+
+<center><p><img src="figs/rice_fig2b.png" align="bottom" width=100></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec48">Only strongly-bound XBs develop force </h2>
+Force is proportional to the number of strongly bound XBs
+$$
+F \sim (XB_{prer} + XB_{postr})
+$$
+
+The Rice model describes the XBs as linear springs. The force developed by a cross bridge is equal to a spring constant multiplied with its distortion (strain):
+$$
+F \sim k_{XB}(XB_{prer}xXB_{prer} + XB_{postr}xXB_{postr})
+$$
+
+Concept originally presented by Razumova et al (1999).
+
+<p>
+<!-- !split  -->
+
+<h2 id="___sec49">Cross bridge distortion comes from two sources </h2>
+
+<ul>
+  <li> Lengthening or shortening a muscle will change the distortion of all strongly bound XBs. In the model the XB distortions depend on \( dSL/dt \), with \( SL \) being sarcomere length.</li>
+  <li> Cross-bridges going from pre- to post-rotation state (and back) will induce a distortion (\( x_0 \))</li>
+</ul>
+
+$$
+\fontsize{10pt}{10pt}
+\begin{align*}
+\frac{dxXB_{prer}}{dt} &\sim \frac{dSL}{dt} + (-f_{appT}xXB_{prer} + hbT*(xXB_{postr} - (x_0 + xXB_{prer}))) \\
+\frac{dxXB_{postr}}{dt} &\sim \frac{dSL}{dt} + h_{fT} (xXBprer + x_0 - xXBpostr) 
+\end{align*}
+$$
+
+Warning: The published model includes much more complex expressions. The important part is the overall concept.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec50">Demo of classical cell mechanics experiments </h2>
+From Rice et al (2008).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec51">Coupling to electrophysiology </h2>
+
+<ul>
+  <li> Coupling of the Rice model to an electrophysiology (EP) model is  straight-forward; just take Ca from EP model as input to Rice model.</li>
+  <li> Often some overlap, since most EP models describe binding of Ca to Troponin; we need to adjust the models slightly to get the right Ca dynamics.</li>
+  <li> Can be extended with more mechanisms of mechano-electric feedback (MEF), such as stretch-activated channels.</li>
+</ul>
+
+
+<!-- ------------------- end of main content --------------- -->
+
+
+</body>
+</html>
+    
+
