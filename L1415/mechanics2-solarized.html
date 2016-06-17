@@ -1,0 +1,925 @@
+<!--
+Automatically generated HTML file from DocOnce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="DocOnce: https://github.com/hplgit/doconce/" />
+<meta name="description" content="Fundamental cardiac mechanics \\ Part 2: A glimpse of nonlinear solid mechanics">
+
+<title>Fundamental cardiac mechanics \\ Part 2: A glimpse of nonlinear solid mechanics</title>
+
+
+<link href="https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_styles/style_solarized_box/css/solarized_light_code.css" rel="stylesheet" type="text/css" title="light"/>
+<script src="https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_styles/style_solarized_box/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="http://thomasf.github.io/solarized-css/solarized-light.min.css" rel="stylesheet">
+<style type="text/css">
+h1 {color: #b58900;}  /* yellow */
+/* h1 {color: #cb4b16;}  orange */
+/* h1 {color: #d33682;}  magenta, the original choice of thomasf */
+code { padding: 0px; background-color: inherit; }
+pre {
+  border: 0pt solid #93a1a1;
+  box-shadow: none;
+}
+
+div { text-align: justify; text-justify: inter-word; }
+</style>
+
+
+</head>
+
+<!-- tocinfo
+{'highest level': 2,
+ 'sections': [(u'Modeling the complete muscle (1)', 2, None, '___sec0'),
+              (u'Solid mechanics (1)', 2, None, '___sec1'),
+              (u'Solid mechanics (2)', 2, None, '___sec2'),
+              (u'Kinematics', 2, None, '___sec3'),
+              (u'Deformation and displacement (1)', 2, None, '___sec4'),
+              (u'Deformation and displacement (2)', 2, None, '___sec5'),
+              (u'The deformation gradient', 2, None, '___sec6'),
+              (u'The right Cauchy-Green tensor', 2, None, '___sec7'),
+              (u'The Green-Lagrange strain tensor (1)', 2, None, '___sec8'),
+              (u'The Green-Lagrange strain tensor (2)', 2, None, '___sec9'),
+              (u'Equilibrium of forces', 2, None, '___sec10'),
+              (u'Body forces', 2, None, '___sec11'),
+              (u'Surface forces', 2, None, '___sec12'),
+              (u'The stress vector', 2, None, '___sec13'),
+              (u'Stress in a rod', 2, None, '___sec14'),
+              (u'Observations', 2, None, '___sec15'),
+              (u'Stress vector computation', 2, None, '___sec16'),
+              (u'The stress tensor', 2, None, '___sec17'),
+              (u'Stress tensor in a rod (1)', 2, None, '___sec18'),
+              (u'Stress tensor in a rod (2)', 2, None, '___sec19'),
+              (u'Stress tensor in a rod (3)', 2, None, '___sec20'),
+              (u'Equilibrium of forces (1)', 2, None, '___sec21'),
+              (u'Equilibrium of forces', 2, None, '___sec22'),
+              (u'Two types of forces', 2, None, '___sec23'),
+              (u'The equilibrium equation (1)', 2, None, '___sec24'),
+              (u'The equilibrium equation (2)', 2, None, '___sec25'),
+              (u'The equilibrium equation (3)', 2, None, '___sec26'),
+              (u'The Piola-Kirchoff stress tensors', 2, None, '___sec27'),
+              (u'The equilibrium equation for large deformations',
+               2,
+               None,
+               '___sec28'),
+              (u'Constitutive equations', 2, None, '___sec29'),
+              (u'Relating stress and strain', 2, None, '___sec30'),
+              (u"Hooke's generalized law", 2, None, '___sec31'),
+              (u'Non-linear (hyper)elastic materials', 2, None, '___sec32'),
+              (u'The strain energy function (1)', 2, None, '___sec33'),
+              (u'The strain energy function (2)', 2, None, '___sec34'),
+              (u'The strain energy function (3)', 2, None, '___sec35'),
+              (u'The strain energy function (4)', 2, None, '___sec36'),
+              (u'Examples of strain energy functions (1)',
+               2,
+               None,
+               '___sec37'),
+              (u'Example of strain energy functions (2)',
+               2,
+               None,
+               '___sec38'),
+              (u'Summary; complete large deformation elasticity problem',
+               2,
+               None,
+               '___sec39'),
+              (u'Variational form of large deformation elasticity',
+               2,
+               None,
+               '___sec40'),
+              (u'Material laws for active contraction (1)',
+               2,
+               None,
+               '___sec41'),
+              (u'Material laws for active contraction (2)',
+               2,
+               None,
+               '___sec42'),
+              (u'Boundary conditions for whole heart modeling (1)',
+               2,
+               None,
+               '___sec43'),
+              (u'Boundary conditions for whole heart modeling (2)',
+               2,
+               None,
+               '___sec44'),
+              (u'Boundary conditions for whole heart modeling (2)',
+               2,
+               None,
+               '___sec45')]}
+end of tocinfo -->
+
+<body>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "AMS"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+</script>
+<script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- newcommands1.tex -->
+$$
+\newcommand{\modten}[1]{\mathbfx{#1}}
+\newcommand{\modvec}[1]{\mathbfx{#1}}
+\newcommand{\x}{\mathbfx{x}}
+\renewcommand{\b}{\mathbfx{b}}
+\newcommand{\F}{\mathbfx{F}}
+\newcommand{\n}{\mathbfx{n}}
+\renewcommand{\v}{\mathbfx{v}}
+\newcommand{\stress}{\modten{\sigma}}
+\newcommand{\PP}{\mathbfx{P}}
+\renewcommand{\SS}{\mathbfx{S}}
+$$
+
+
+
+
+    
+<!-- ------------------- main content ---------------------- -->
+
+
+
+<center><h1>Fundamental cardiac mechanics \\ Part 2: A glimpse of nonlinear solid mechanics</h1></center>  <!-- document title -->
+
+<p>
+<!-- author(s): Joakim Sundnes -->
+
+<center>
+<b>Joakim Sundnes</b> 
+</center>
+
+<p>
+<!-- institution(s) -->
+
+<br>
+<p>
+<center><h4>Jun 17, 2016</h4></center> <!-- date -->
+<br>
+<p>
+<!-- !split -->
+
+<h2 id="___sec0">Modeling the complete muscle (1) </h2>
+
+<ul>
+  <li> The model of Rice et al (and similar models) gives the force development in a single cell.</li>
+  <li> Cells are connected to form tissue, and embedded in an extracellular matrix consisting mainly of collagen</li>
+  <li> As cells contract, they interact with the elastic response of the tissue</li>
+  <li> Overall deformation and heart dynamics results from a combination of actively developed force and passive elastic forces</li>
+  <li> Both types of forces are highly clinically relevant:</li>
+
+<ul>
+    <li> Increased stiffness leads to reduced filling and heart failure (diastoloc HF)</li>
+    <li> Reduced contractility leads to reduced ejection and HF (systolic HF)</li>  
+</ul>
+
+  <li> Modeling the complete muscle mechanics is based on the framework of <em>nonlinear solid mechanics</em></li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec1">Solid mechanics (1) </h2>
+
+<ul>
+  <li> The key variables in solid mechanics problems are <em>stresses</em> and <em>strains</em></li>
+  <li> Stress = force per area, strain = relative deformation</li>
+  <li> Important distinction between small and large deformations:</li>
+
+<ul>
+    <li> Small deformation; neglect the change in area as the material deforms</li>
+    <li> Large deformations (> ca 5\% strain); need to consider change in area</li>
+</ul>
+
+  <li> Small deformation problems are often linear, large deformations give nonlinear problems</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec2">Solid mechanics (2) </h2>
+In short, the field of solid mechanics has three main parts:
+
+<ul>
+   <li> Kinematics; the description of motion and deformation of the material (i.e. strains)</li>
+   <li> Balance laws; fundamental equations based on balance of mass and momentum, or equilibrium of forces/stresses in the static case</li>
+   <li> Constitutive laws; experimentally derived laws that relate stresses to strains.</li> 
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec3">Kinematics </h2>
+
+<p>
+How do we quantify deformation/change of shape?
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec4">Deformation and displacement (1) </h2>
+<center><p><img src="figs/Lagrangian.png" align="bottom" width=600></p></center>
+
+<ul>
+  <li> The path of each particle: \( x (X, t) \)</li>
+  <li> Initial position: \( r (X, 0) = X \) (particle label)</li>
+  <li> Displacement field \( u \):</li>
+</ul>
+
+$$u (X ,t) = x (X,t ) - X$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec5">Deformation and displacement (2) </h2>
+
+<ul>
+  <li> The displacement \( u \) is often the primary unknown in solid mechanics</li>
+  <li> \( u \) contains everything we need to know about the deformation;</li> 
+
+<ul>
+    <li> Change of shape ("true" deformation)</li>
+    <li> Rigid mody motion (rotation and translation)</li>
+</ul>
+
+  <li> Our goal is to relate internal forces (stresses) to deformations</li>
+  <li> Rigid body motion does not give rise to internal forces</li>
+  <li> We need a measure of deformation that only contains <em>change of shape</em></li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec6">The deformation gradient </h2>
+We are interested in <em>relative</em> displacement between different points. It makes sense to take the derivative of the mapping:
+$$
+F = \frac{\partial x}{\partial X} = \nabla x = I +\nabla u
+$$
+
+This is the <em>deformation gradient</em>, a fundamental quantity in nonlinear solid mechanics. In particular, an infinitesimal line segment \( dX \) in the reference configuration deforms according to
+$$
+dx = FdX
+$$
+
+<p>
+<!-- !split  -->
+
+<h2 id="___sec7">The right Cauchy-Green tensor </h2>
+
+<ul>
+  <li> The deformation gradient includes both rotation and change of shape.</li> 
+  <li> Rotation does not induce internal forces, and must be removed to get a measure of of pure change of shape.</li>
+  <li> According to the Polar decomposition theorem, if \( F \) is non-singular we have \( F=RU \), where \( R \) is an orthogonal rotation tensor, while \( U \) is symmetric and contains no rotation.</li>
+  <li> We introduce</li> 
+</ul>
+
+$$
+C = F^TF = (RU)^T(RU) = U^T R^T R U = U^T U
+$$
+
+\( C \) is called the <em>right Cauchy-Green tensor</em>.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec8">The Green-Lagrange strain tensor (1) </h2>
+
+<ul>
+  <li> We are now ready to define strain</li>
+  <li> Look at a small line segment \( dX \), which deforms to \( dx \)</li>
+  <li> If \( ||dx || = ||dX || \): pure rotation</li>
+  <li> \( \Rightarrow \) Suitable strain measure arises from</li>
+</ul>
+
+$$
+\begin{align*} 
+||dx ||^2 - ||dX ||^2 &= dx^Tdx - dX^TdX \\
+&= (FdX)^T(FdX)-dX^TdX \\
+&= dX^TF^TFdX-dX^TdX = 2 dX E dX 
+\end{align*}
+$$
+
+\( E \) is the important quantity holding strain information.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec9">The Green-Lagrange strain tensor (2) </h2>
+The Green Lagrange strain tensor is the most commonly used strain tesnor for large elastic deformations. We have
+$$
+E = \frac{1}{2}(C-I) = \frac{1}{2}(F^TF-I) 
+$$
+
+or
+$$
+\begin{align*}
+E_{ij} &= \frac{1}{2}\left(\frac{\partial x_k}{\partial X_i}
+\frac{\partial x_k}{\partial X_j}-\delta_{ij}\right) \\
+&= \frac{1}{2}
+\left( {\frac{\partial u_i}{\partial X_j}} + {\frac{\partial u_j}{\partial X_i}}
++ {\frac{\partial u_k}{\partial X_i}}{\frac{\partial u_k}{\partial X_j}}
+\right)
+\end{align*}
+$$
+
+If deformations are small we can neglect higher order terms to get
+$$
+E_{ij} \approx \left( {\frac{\partial u_i}{\partial X_j}} + {\frac{\partial u_j}{\partial X_i}}\right)
+$$
+
+which may be recognized as the standard linear strain tensor used for small strains:
+$$
+\varepsilon_{ij} = \left( {\frac{\partial u_i}{\partial x_j}} + {\frac{\partial u_j}{\partial x_i}}\right)
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec10">Equilibrium of forces </h2>
+
+<p>
+Newton's second law applied to a continuous and deforming material.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec11">Body forces </h2>
+<center><p><img src="figs/body_forces.png" align="bottom" width=400></p></center>
+
+<ul>
+  <li> Body forces \( \b \) are &quot;distant&quot; forces acting in each point of the body</li>
+  <li> Example: gravity \( \b = \modvec{g} \)</li>
+  <li> Example: centrifugal force \( \b = \modvec{\omega}\times\modvec{\omega}\times\modvec{r} \)</li>
+  <li> Total force:</li>  
+</ul>
+
+$$
+\begin{equation*} 
+\modvec{B} = \int\limits_{\hbox{body}}\varrho \b dV
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec12">Surface forces </h2>
+<center><p><img src="figs/surface_forces.png" align="bottom" width=400></p></center>
+
+<ul>
+  <li> Distributed along the surface of a body or of an internal part of a body</li>
+  <li> Stress = force per unit area, \( \modvec{s}(\x ,t) \)</li>
+  <li> Total force:</li>  
+</ul>
+
+$$
+\begin{equation*} 
+\modvec{S}(\x,t) = \int\limits_{\hbox{surface}} \modvec{s}(\x ,t) dA
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec13">The stress vector </h2>
+
+<ul>
+  <li> Stress is force per unit area (vector)</li>
+  <li> The stress vector depends on the orientation of the area</li>
+  <li> That is, the stress at a point on a surface depends on the location of the point (on the surface) and on the orientation of the surface at that point</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec14">Stress in a rod </h2>
+<center><p><img src="figs/rodstress.png" align="bottom" width=600></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec15">Observations </h2>
+
+<ul>
+  <li> The stress at the bullet point was in one case $F/A$\\  (\( A \): area) and in another case 0!</li>
+  <li> &quot;Stress&quot; means stress at a <em>point</em> on a  <em>surface</em></li>
+  <li> The surface orientation (normal vector \( \n \)) is needed for stress vector computations</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec16">Stress vector computation </h2>
+
+<ul>
+  <li> The stress vector depends on space, time and the orientation  (unit outward normal vector \( \modvec{n} \)) of the surface on which the stress vector acts</li>
+  <li> Notation: $\modvec{s} (\modvec{r},t;\modvec{n})$\\ %(\( \modvec{s} \) varies in \( _R_^7 \), i.e., with 7 parameters!)</li>
+  <li> Cauchy's 1. law (Cauchy's stress theorem):</li>  
+</ul>
+
+$$
+\begin{equation*} \modvec{s} (\modvec{r},t;\modvec{n}) = \modvec{n}(\modvec{r},t)\cdot
+\stress(\modvec{r},t) \end{equation*}
+$$
+
+(\( \Rightarrow \) $\modvec{s}$ has a simple (linear) dependence on \( \n \))
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec17">The stress tensor </h2>
+
+<ul>
+  <li> The quantity \( \stress \) or \( \sigma_{ij} \) in Cauchy's 1. law is called the stress tensor</li>
+  <li> \( \stress \) contains 9 entries:</li>  
+</ul>
+
+$$
+\begin{equation*} 
+\stress = \left(\begin{array}{ccc} \sigma_{xx} & \sigma_{xy} & \sigma_{xz}\\ \sigma_{yx} & \sigma_{yy} & \sigma_{yz}\\ \sigma_{zx} & \sigma_{zy} & \sigma_{zz}
+\end{array}\right) 
+\end{equation*}
+$$
+
+The entries have a physical interpretation, but represent mainly
+ingredients in a tool (Cauchy's 1. law) for computing the stress
+vector at an arbitrary surface
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec18">Stress tensor in a rod (1) </h2>
+<center><p><img src="figs/rod.png" align="bottom" width=600></p></center>
+
+<p>
+\centerline{\includegraphics[width=0.6\linewidth]{figs/rod}}
+
+<ul>
+  <li> Uni-axial tension force</li>
+  <li> How can we find the stress tensor in this case?</li>
+  <li> General approach: solve the governing PDE with boundary conditions (possible even analytically!)</li>
+  <li> Or: use physical reasoning to guess at a stress tensor (usually difficult, but possible in this case)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec19">Stress tensor in a rod (2) </h2>
+
+<ul>
+  <li> Cutting the body along coordinate planes (\( x=\hbox{const} \), \( y=\hbox{const} \), \( z=\hbox{const} \))</li> 
+</ul>
+
+\centerline{\includegraphics[width=0.4\linewidth]{figs/rodstress}} suggests  
+$$
+\begin{equation*}  
+\stress = \left(\begin{array}{ccc} F/A & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0
+\end{array}\right) 
+\end{equation*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec20">Stress tensor in a rod (3) </h2>
+
+<ul>
+  <li> How can we know that this guess is correct?</li>
+  <li> Rhysical reasoning indicates such a stress tensor, but only the solution of a full model for elastic deformation can tell if our assumption of \( \stress \) is correct</li>
+  <li> Classically, such guesses based on physical reasoning were  required to treat the problem analytically</li>
+  <li> Today, such guesses are crucial to assess whether numerical results are reasonable</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec21">Equilibrium of forces (1) </h2>
+For an arbitrary volume inside a material,  Newton's 2nd law reads
+$$
+\begin{equation*} 
+{d\modten{I}\over dt} = \sum \modten{F}
+\end{equation*}
+$$
+
+where \( \modten{I} \) is momentum:   
+$$
+\begin{equation*} 
+\modten{I}=\int_V \varrho\v dV
+\end{equation*}
+$$
+
+<p>
+and \( \sum \modten{F} \) is the total external force: surface forces + body forces.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec22">Equilibrium of forces </h2>
+In solid mechanics, it is common to neglect inertia effects:
+$$
+{d\modten{I}\over dt} \approx 0
+$$
+
+Newton's second law reduces to a force equilibrium: \( \sum \modten{F} = 0 \)
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec23">Two types of forces </h2>
+Surface forces:   
+$$
+\begin{equation*} 
+\int\limits_{\partial V} \stress\cdot\modvec{n}dS
+\end{equation*}
+$$
+
+Body forces (e.g. gravity)  
+$$
+\begin{equation*} 
+\int\limits_{V} \varrho\modvec{b}dV
+\end{equation*}
+$$
+
+<p>
+<!-- !split  -->
+
+<h2 id="___sec24">The equilibrium equation (1) </h2>
+We have 
+$$
+\int\limits_{\partial V} \stress\cdot\modvec{n}dS + \int\limits_{V} \varrho\modvec{b}dV = 0
+$$
+
+Applying Gauss' theorem to the first term gives
+$$
+\int\limits_{V} \nabla\cdot\stress dV + \int\limits_{V} \varrho\modvec{b}dV = 0
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec25">The equilibrium equation (2) </h2>
+Since the volume is arbitrary we must have
+$$ 
+\nabla\cdot\stress + \varrho\modvec{b} = 0 .
+$$
+
+
+<ul>
+  <li> This is the static (equilibrium) version of Cauchy's equation of motion.</li> 
+  <li> In heart mechanics the effects of gravity are negligible, and we are left with</li>
+</ul>
+
+$$
+\nabla\cdot\stress = 0
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec26">The equilibrium equation (3) </h2>
+
+<ul>
+  <li> The equilibrium equation derived above is completely valid for all materials in equilibrium</li>
+  <li> Inconvenient to use for large deformations, since Cauchy stress \( \sigma \) is defined relative to the undeformed area, which is unknown</li>
+  <li> Differentiation (the divergence operator) is also performed relative to the deformed coordinates of the material, which are not known</li>
+  <li> A so-called Lagrangian approach is common:</li>
+
+<ul>
+    <li> Map all quantities and operations back to the undeformed geometry of the material</li>
+    <li> Introduce alternative stress tensors that are computed on the undeformed geometry</li>
+</ul>
+
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec27">The Piola-Kirchoff stress tensors </h2>
+The first Piola-Kirchoff stress tensor
+$$
+\PP = J\stress\F^{-T}
+$$
+
+gives the actual force referred to the undeformed surface area.
+
+<p>
+The second Piola-Kirchoff stress tensor
+$$
+\SS = J\F^{-1}\stress\F^{-T}
+$$
+
+is derived by mapping the force back to the undeformed geometry.
+
+<p>
+These stress tensors are only used as tools in computations. The relevant physical quantity is the Cauchy stress \( \stress \).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec28">The equilibrium equation for large deformations </h2>
+In terms of the Piola-Kirchoff stresses, the equilibrium equation reads
+$$
+\nabla\cdot \PP = 0 ,
+$$
+
+or 
+$$
+\nabla\cdot \modten{F}\SS = 0
+$$
+
+These are the versions we will use for modeling heart muscle mechanics.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec29">Constitutive equations </h2>
+How are stresses in the material related to the strains?
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec30">Relating stress and strain </h2>
+We have introduced several important concepts:
+
+<ul>
+  <li> Strain; a precise measure of change of shape in a material</li>
+  <li> Stress; force/area, a useful measure of forces acting on internal and external surfaces</li>
+  <li> The fundamental equation that describes equilibrium of forces in the material</li>
+</ul>
+
+What is missing is a description of material behavior:
+
+<ul>
+  <li> Equation of motion is valid for any solid (rubber, steel, soft tissues...)</li>
+  <li> Has six unknowns (components of the symmetric stress tensor), but only three equations (divergence of a tensor is a vector)</li>
+  <li> We need <em>constitutive equations</em> to close the system</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec31">Hooke's generalized law </h2>
+Elongation of a rod: Hooke's experiments showed that
+$$ \frac{F}{A} = E \frac{\Delta L}{L} $$
+
+
+<ul>
+  <li> Stress (force) is linearly related to strain (relative displacement)</li>
+  <li> The general form: \( \sigma_{ij}=C_{ijkl}\varepsilon_{kl} \)</li>
+  <li> \( C_{ijkl} \) is a fourth-order tensor (81 components) which describes the stiffness of the material</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec32">Non-linear (hyper)elastic materials </h2>
+For materials undergoing large elastic deformations, the stress-strain relation is normally non-linear:
+<center><p><img src="figs/exponential.png" align="bottom" width=600></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec33">The strain energy function (1) </h2>
+
+<ul>
+  <li> For all hyperelastic materials we can define a strain energy function</li>
+</ul>
+
+\( W \), normally defined in terms of the Green-Lagrange strain or its 
+invariants
+
+<ul>
+  <li> For an elastic material following Hookes law, the strain energy function</li>
+</ul>
+
+can be written as
+
+$$
+W = \frac{1}{2}C_{ijkl}\varepsilon_{ij}\varepsilon_{kl}
+$$
+
+(Recall that in the small deformation case \( \varepsilon_{ij}\approx E_{ij} \))
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec34">The strain energy function (2) </h2>
+The stress is obtained by taking the first derivative of the strain energy function with respect to the strain
+$$
+\sigma_{ij} = \frac{\partial W}{\partial \varepsilon_{ij}}
+$$
+
+The second derivative of the strain energy function gives the stiffness tensor
+$$
+C_{ijkl} = \frac{\partial^2 W}{\partial \varepsilon_{ij}\partial \varepsilon_{kl}}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec35">The strain energy function (3) </h2>
+Similar principles apply for non-linear hyperelastic materials:
+
+<ul>
+  <li> The first derivative of \( W \) with respect to the Green-Lagrange strain</li>
+</ul>
+
+gives the 2nd Piola-Kirchoff stress; \( S_{ij} = \frac{\partial W}{\partial E_{ij}} \)
+
+<ul>
+  <li> Differentiating twice gives the tangential stiffness, often</li>
+</ul>
+
+  referred to as the <em>second elasticity tensor</em>:
+$$
+C_{ijkl} = \frac{\partial^2 W}{\partial E_{ij}\partial E_{kl}}
+$$
+
+It is important to note that in the non-linear case this tensor is not constant, but depends on the deformation state. The tangential stiffness is used in computational techniques (Newton's method).
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec36">The strain energy function (4) </h2>
+Similar relations hold for the PK1 stress
+
+<ul>
+  <li> The first derivative of \( W \) with respect to the deformation gradient</li>
+</ul>
+
+gives the 1st Piola-Kirchoff stress \( P_{ij} = \frac{\partial W}{\partial F_{ij}} \)
+
+<ul>
+  <li> Differentiating twice gives an alternative stiffness tensor, known as the <em>first elasticity tensor</em></li>
+</ul>
+
+$$
+A_{ijkl} = \frac{\partial^2 W}{\partial F_{ij}\partial F_{kl}}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec37">Examples of strain energy functions (1) </h2>
+St. Venant-Kirchoff:
+$$
+W(E) = \frac{\lambda}{2}(\textrm{tr}E)^2+\mu\textrm{tr}E^2
+$$
+
+Neo-Hookean:
+$$
+W = \frac{\mu}{2}(I_1-3)-\mu\log J+\frac{\lambda}{2}(\log J)^2
+$$
+
+where \( I_1 \) is the <em>first invariant</em> of the right Cauchy-Green tensor
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec38">Example of strain energy functions (2) </h2>
+Orthotropic exponential model, Guccione et al (1995), 8 material parameters:
+$$
+W = \frac{1}{2}K(e^{Q}-1) + C_{compr}(J \ln J - J +1),
+$$
+
+with
+$$
+\begin{align*}
+Q &= b_{ff}{E}_{ff}^2 + b_{ss}{E}_{ss}^2 +
+b_{nn}{E}_{nn}^2 + b_{fs}({E}_{fs}^2+{E}_{sf}^2) \\ 
+&  +b_{fn}({E}_{fn}^2+{E}_{nf}^2)+
+b_{ns}({E}_{ns}^2+{E}_{sn}^2)
+\end{align*}
+$$
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec39">Summary; complete large deformation elasticity problem </h2>
+Static problem with no body forces:
+$$
+\begin{align*}
+   - \nabla\cdot\PP &= 0  \quad \text{ in } \Omega \\
+    u &= g  \quad \text{ on } \Gamma_{\mathrm{D}} \\
+    P \cdot n &= T  \quad \text{ on } \Gamma_{\mathrm{N}} 
+\end{align*}
+$$
+
+
+<ul>
+  <li> \( u \) is the displacement</li>
+  <li> \( \PP = \partial W/\partial\modten{F} \) is the first Piola--Kirchoff stress tensor</li>
+  <li> \( W \) is the strain energy</li> 
+  <li> \( g \) is a given boundary displacement</li>
+  <li> \( T \) is a given boundary traction (typically pressure)</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec40">Variational form of large deformation elasticity </h2>
+Multiply by a test function \( v \in \hat{V} \) and integrate by parts:
+$$
+\begin{equation*}
+    - \int_{\Omega} \nabla\cdot \PP \cdot v dx
+    = \int_{\Omega} \PP : \nabla v dx - \int_{\partial\Omega} (\PP \cdot n) \cdot v ds
+\end{equation*}
+$$
+
+<p>
+Note that \( v = 0 \) on \( \Gamma_{\mathrm{D}} \) and \( \PP \cdot n = T \) on \( \Gamma_{\mathrm{N}} \)
+
+<p>
+Find \( u \in V \) such that
+$$
+\begin{equation*}
+\int_{\Omega} \PP : \nabla v dx
+    =  \int_{\Gamma_{\mathrm{N}}} T \cdot v ds
+\end{equation*}
+$$
+
+for all \( v \in \hat{V} \)
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec41">Material laws for active contraction (1) </h2>
+
+<ul>
+  <li> So far we have only considered passive mechanical behavior of the tissue</li>
+  <li> The tissue consists of cells, which contract and develop their own force</li>
+  <li> How can we model the actively contracting tissue?</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec42">Material laws for active contraction (2) </h2>
+The most common approach is to to an additive split of the stress tensor, the <em>active stress</em> approach:
+$$
+\PP = \PP_p + \PP_a,
+$$
+
+with
+$$
+\begin{align*}
+\PP_p &= \frac{\partial W}{\partial\modten{F}} \\
+\PP_a &= \left(\begin{array}{ccc} T_a & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0
+\end{array} \right) .
+\end{align*}
+$$
+
+Here, \( T_a \) is the output force of a cell contraction model (e.g. Rice et al 2008), typically assumed
+to act only in the direction of the muscle fibers.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec43">Boundary conditions for whole heart modeling (1) </h2>
+Standard boundary conditions for whole heart modeling:
+
+<ul>
+  <li> Partly fixed (\( u=0 \)) at the base</li>
+  <li> Zero pressure on the outer surface (epicardium)</li>
+  <li> Non-zero, time-varying pressure on the inner surface (endocardium)</li>
+</ul>
+
+<center><p><img src="figs/heart.png" align="bottom" width=400></p></center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec44">Boundary conditions for whole heart modeling (2) </h2>
+Endocardial pressure:
+
+<ul>
+  <li> Dynamic pressure which depends on contraction</li>
+  <li> Depends on properties of entire circulation</li>
+  <li> Realistic boundary conditions; couple heart model to ODE based circulation models</li> 
+</ul>
+
+<!-- !split  -->
+
+<h2 id="___sec45">Boundary conditions for whole heart modeling (2) </h2>
+LV model coupled to systemic circulation:
+$$
+\begin{align*}
+\frac{dV_{lv}^{circ}}{dt} &=  \frac{S_{mi}(P_{sv}-P_{lv})}{R_{mi}} -
+\frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}}, \\
+\frac{d V_{sa}}{dt} &=  \frac{S_{ao}(P_{lv}-P_{sa})}{R_{ao}} -
+\frac{P_{sa}-P_{sv}}{R_{sys}}, \\
+\frac{dV_{sv}}{dt} &= \frac{P_{sa}-P_{sv}}{R_{sys}} -
+\frac{S_{mi}(P_{sv}-P_{lv})}{R_{mi}}.
+\end{align*}
+$$
+
+Replace the time varying elastance model for \( p_{lv} \) with the constraint:
+$$
+V_{lv}^{circ}(p_{lv}) - V_{lv}^{fem}(p_{lv}) = 0
+$$
+
+<p>
+
+<!-- ------------------- end of main content --------------- -->
+
+
+</body>
+</html>
+    
+
