@@ -7,7 +7,7 @@ def init_state_values(**values):
     """
     # Imports
     import numpy as np
-    from modelparameters.utils import Range
+    from utils import Range
 
     # Init values
     # vlv=229, v1s=1439, v2s=1071

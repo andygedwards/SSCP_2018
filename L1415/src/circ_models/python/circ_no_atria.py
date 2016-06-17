@@ -7,9 +7,8 @@ def init_state_values(**values):
     """
     # Imports
     import numpy as np
-    from range import Range
-    #print Range()
-    
+    from utils import Range
+
     # Init values
     # vlv=332.42, vrv=226.5, v1s=1656, v2s=333, v1p=243, v2p=208
     init_values = np.array([332.42, 226.5, 1656, 333, 243, 208],\
