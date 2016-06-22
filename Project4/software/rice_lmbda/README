@@ -1,0 +1,6 @@
+Modified version of the Rice 2008 model. The overall model is as presented in
+the original publication, but the state variable SL has been replaced by lambda to
+facilitate coupling to other models. 
+The two-component passive force used in the Rice 2008 model is replaced by a 
+single Fung-style exponential, which is fairly straight-forward to replace by alternative moels
+such as the Holzapfel-Ogden model.

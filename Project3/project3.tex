@@ -1,0 +1,44 @@
+\documentclass[epsfig,11pt]{article}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{epsfig}
+
+\usepackage{vmargin}
+\setpapersize{A4}
+
+
+\title{Project 3: Mechanisms of cardiac cellular contraction and mechanics}
+
+\begin{document}
+
+\maketitle
+
+\begin{description}
+\item{Team:} Ingrid Holm and Marina Strocchi
+\item{Advisor:} Joakim Sundnes
+
+\item{Project summary:}
+We want to study contractile twitch dynamics and their regulation through cross-bridge cycling mechanisms and calcium myofilament interactions. The main goal of the project is to give insight into how changes in myofilament function that are present during heart failure (HF), such as calcium sensitivity and cross-bridge dynamics, affect myocyte contractility and cardiac function. In addition, the project will give insight into the differences and similarities of two models of myocyte contraction. The model by Sachse et al \cite{Sachse:2003} and the model by Rice et al \cite{Rice:2008jd} are both formulated as systems of ODEs, but are otherwise quite different in which mechanisms they describe in detail and which ones that are more phenomenological. We want to gain insight into how well the two models describe known physiological features, and
+how each model responds to known pathological changes. 
+
+\item{Main objectives:} 
+\begin{itemize}
+\item To explore the behavior of two different myocyte contraction models, \cite{Sachse:2003,Rice:2008jd}. Studying the papers and other relevant literature we aim to figure out what biophysics the two models describe, and how they differ. Through numerical experiments we will then explore the impact of these differences on normal cell function. 
+\item To investigate the impact of altered dynamics of subcellular processes on cell level twitch dynamics. Identify the critical parameters for changing calcium sensitivity, cross bridge dynamics, and potentially other known changes during heart failure, and analyze the sensitivity of key quantities to changes in the model parameters. The main quantities of interest will be total twitch length, time to peak, and twitch amplitude. Both isometric and isotropic experiments should be considered.
+\end{itemize}
+
+\item{Tasks (general):}
+\begin{enumerate}
+\item Explore the details of the two models, using the original publications, other relevant literature, and the available source code. Summarize the findings in a brief report/presentation.
+\item Run numerical experiments to reproduce the figures in \cite{Rice:2008jd}, which describe a number of characteristic cell responses. Example code is provided including Python code for all figures using the model in \cite{Rice:2008jd}, the original Gotran source code for both models, and Matlab code for Figure 5A using both models. The model in \cite{Sachse:2003} will need to be reparameterized to reproduce the figures accurately, and it is uncertain to what extent the model is able to reproduce all features. In the cases where the model does not produce the expected behavior, try to figure out why.
+\item Explore the literature to obtain a list of known changes to cellular mechanisms in HF, and analyze the impact of these changes using the model codes developed. 
+\end{enumerate}
+Although these steps have a natural order, there is some potential for parallel work. In particular, the extension of the model codes can be done in parallel with the exploration of model biophysics and the known changes in HF.
+
+\end{description}
+
+\bibliographystyle{plain}
+\bibliography{./papers}
+
+\end{document}

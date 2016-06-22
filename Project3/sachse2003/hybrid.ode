@@ -1,0 +1,175 @@
+# -*- coding: utf-8 -*-
+
+# Cardiomyocyte Force Model
+# Sachse-Glaenzel-Seemann-2003
+# Modeling of Protein Interactions Involved in Cardiac Tension Development
+
+# ABSTRACT: Modeling of protein interactions responsible for cardiac tension
+# development can enhance the understanding of physiological and
+# pathophysiological phenomena of the heart. Principal components of muscular
+# tension development are the proteins actin, myosin, troponin and tropomyosin.
+# The tension is produced by cross-bridge cycling of actin and myosin using
+# adenosine triphosphate as energy source. The cross-bridge cycling is
+# initiated by binding of intracellular calcium to troponin, resulting in
+# configuration changes of tropomyosin. In this work a hybrid model of protein
+# interactions in cardiac tension development is derived on basis of recent
+# measurements and descriptions on protein level. Dependencies on intracellular
+# calcium concentration, sarcomere stretch and stretch velocity as well as
+# cooperativity mechanisms are incorporated. The model quantifies the tension
+# development by states associated to configurations of the involved proteins.
+# The model enables in conjunction with electrophysiological models of cardiac
+# myocytes the reconstruction of electro-mechanical phenomena. Numerical
+# simulations with the hybrid model were performed, which illustrated the
+# reconstruction of steady state and length switches experiments. The steady
+# state experiments describe the force-cytosolic [Ca2+] relationship in intact
+# rat cardiac trabeculae. The length switch experiments provide data on the
+# redevelopment of force after sudden stretch in rabbit right ventricular
+# papillary muscles. Results of the numerical simulations show quantitative
+# agreement with experimental studies. The hybrid model of cardiac tension
+# development offers interfaces to further models of cardiac electro-mechanics.
+# The hybrid model can be coupled with models of cellular electrophysiology and
+# passive mechanics of myocardium allowing the inclusion of mechano-electrical
+# feedback mechanisms. The hybrid model can be applied to elucidate
+# cooperativity mechanisms, pathophysiological changes and metabolism of
+# tension development.
+
+# The original paper reference is cited below:
+# Modeling of Protein Interactions Involved in Cardiac Tension Development,
+# F. B. Sachse, K. G. Glanzel, and G. Seemann, 2003, International Journal of
+# Bifurcation and Chaos, 13, 3561-3578. (no PubMed ID)
+
+# Parametrization has been done and documented in the theses from Kerstin
+# Glänzel (2002, in German) and Kraisorn Chaisaowong (2004, attached).
+
+# IMPLEMENTED manually by Eike M Wuelfers (eike@wuelfers.com), 4/2015,
+# based on existing C++ implementation from the authors.
+# Some formulations are different from the paper, e.g., sometimes 1 minus the
+# sum of complementary states is used instead of the sum of some states.
+
+# COMPONENTS: Use components "Crossbridge", "Tropomyosin" and "Troponin"
+# If TCa should be coupled (via parameter), don't use the latter one.
+# For Ca-feedback use component "Calcium" additionally.
+
+# A NOTE ON VELOCITY: The velocity mechanism in this model is only used for
+# unphysiological speeds, i.e., during length changes experiments etc.
+# See the paper for details.
+
+# PARAMETERS
+# Cai: Intracellular Ca^{2+} contentration (micro-molar)
+# stretch: Relative sarcomere stretch
+# velocity: Stretch velocity, m/s
+
+parameters(
+    stretch = 1.0,
+    velocity = ScalarParam(0.0, unit="m*s**-1"))
+
+parameters("Equation for simulated calcium transient",
+           tau1 = ScalarParam(20, unit="ms"),
+           tau2 = ScalarParam(110, unit="ms"),
+           start_time = ScalarParam(5, unit="ms"),
+           Ca_amplitude = ScalarParam(1.45, unit="uM"),
+           Ca_diastolic = ScalarParam(0.09, unit="uM"))
+
+# Rate contants k_* are in 1/ms
+parameters("Crossbridge",
+    k_1  = ScalarParam(1.0, unit="ms**-1"),
+    k_m1 = ScalarParam(.010, unit="ms**-1"),
+    k_2  = ScalarParam(1.0, unit="ms**-1"),
+    k_3  = ScalarParam(.150, unit="ms**-1"),
+    k_m3 = ScalarParam(.015, unit="ms**-1"),
+    k_4  = ScalarParam(1.5, unit="ms**-1"),
+    k_m4 = ScalarParam(1.0, unit="ms**-1"),
+    k_5  = ScalarParam(.025, unit="ms**-1"),
+    k_m5 = ScalarParam(.008, unit="ms**-1"),
+    k_6  = ScalarParam(.05, unit="ms**-1"),
+    k_m6 = ScalarParam(.02, unit="ms**-1"),
+    k_7  = ScalarParam(.03, unit="ms**-1"),
+    k_8  = ScalarParam(.2, unit="ms**-1"),
+    k_m8 = ScalarParam(.005, unit="ms**-1"),
+    k_on = ScalarParam(.040, unit="uM**-1*ms**-1"),
+    k_off = ScalarParam(.040, unit="ms**-1"),
+    tm_on = ScalarParam(.012, unit="ms**-1"),
+    tm_off = ScalarParam(.035, unit="ms**-1"),
+    k_9  = ScalarParam(1.0, unit="ms**-1"),
+    k_10 = ScalarParam(1.0, unit="ms**-1"),
+    k_11 = ScalarParam(1.0, unit="ms**-1"),
+    k_12 = ScalarParam(.05, unit="ms**-1"),
+    k_13 = ScalarParam(1.0, unit="ms**-1"),
+    k_14 = ScalarParam(1.0, unit="ms**-1"),
+    TCaMax = 50.0,
+    TCaMin = 0.0,
+    N_v = 10.0,
+    v50 = ScalarParam(3.0, unit="m*s**-1"),
+    TCa_stretch = 1.0,
+    TMon_coop = 2.0,
+    TMon_pow = 2.0,
+    ATP = 4.0,
+    F_physiol = 1.0,
+    k7_base = 2.25,
+    k7_stretch = 1.25,
+    k7_force = 1.0,
+    k5_stretch = 1.0,
+    k5_xb = 1.5,
+    detachVel = 10.0,
+    Fmax = 0.5)
+
+states("Troponin",
+    TCa = 0.0)
+
+states("Tropomyosin",
+    TMon = 0.0)
+
+states("Crossbridge",
+    AMATP = 0.0,
+    MATP = 0.0385,
+    MADPP = 0.3846,
+    AwMADPP = 0.5769,
+    AsMADPP = 0.0,
+    AsMADP = 0.0,
+    AMADP = 0.0,
+    MADP = 0.0,
+    M = 0.0)
+
+component("Equation for simulated calcium transient")
+beta = (tau1/tau2)**(-1/(tau1/tau2 - 1)) - (tau1/tau2)**(-1/(1 - tau2/tau1))
+Cai = Conditional(Gt(time, start_time), (Ca_amplitude - Ca_diastolic)/beta*(exp(-(time - start_time)/tau1) - exp(-(time - start_time)/tau2)) + Ca_diastolic, Ca_diastolic) # uM
+
+component("Troponin")
+tCaTCa = k_on * (2.0-MADP-M-AMATP-MATP-MADPP-AwMADPP) * stretch**TCa_stretch * Cai * (1.0-TCa) - k_off * TCa
+dTCa_dt  = tCaTCa
+
+component("Tropomyosin")
+dTMon_dt = tm_on * (1.0 + (TMon_coop + stretch) * TMon)**TMon_pow * TCa * (1.0-TMon) - tm_off * TMon
+
+component("Crossbridge")
+
+comment("sarcomere overlap function")
+overlap = Conditional(Lt(stretch,1.0), (1.0-1.4666667*(1.0-stretch)), Conditional(Le(stretch,1.1),1.0,(1.0-1.4666667*(stretch-1.1))))
+
+k5 = k_5 * TMon
+k7 = k_7 * (k7_base - k7_stretch * stretch + abs(velocity)) / (1.0 + k7_force * (overlap * (1.0-MADP-M-AMATP-MATP-MADPP-AwMADPP-AsMADPP) / Fmax))
+velFactor = abs(velocity)**N_v / (abs(velocity)**N_v + v50**N_v)
+
+comment("Transition ratios for state variables")
+t1 = k_1 * ATP * (1.0-MADP-M-AMATP-MATP-MADPP-AwMADPP-AsMADPP-AsMADP-AMADP) - k_m1 * AMATP
+t2 = k_2 * (1.0 + detachVel * velFactor) * AMATP
+t3 = k_3 * MATP - k_m3 * MADPP
+t4 = k_4 * MADPP - k_m4 * (1.0 + detachVel * velFactor) * AwMADPP
+t5 = k5 * (k5_stretch * stretch + 0.4) * (1.0 + k5_xb * (1.0-MADP-M-AMATP-MATP-MADPP-AwMADPP))**2 * AwMADPP - k_m5 * AsMADPP
+t6 = k_6 * AsMADPP - k_m6 * AsMADP
+t7 = k7 * AsMADP
+t8 = k_8 * AMADP - k_m8 * (1.0-MADP-M-AMATP-MATP-MADPP-AwMADPP-AsMADPP-AsMADP-AMADP)
+
+comment("State variables of actin-myosin complex")
+dAMATP_dt   = t1 - t2
+dMATP_dt    = t2 - t3 + ATP * k_14 * M
+dMADPP_dt   = t3 - t4 + velFactor * k_13 * AsMADPP
+dAwMADPP_dt = t4 - t5
+dAsMADPP_dt = t5 - t6 - velFactor * k_13 * AsMADPP
+dAsMADP_dt  = t6 - t7 - velFactor * k_11 * AsMADP
+dAMADP_dt   = t7 - t8 - velFactor * k_10 * AMADP
+dMADP_dt    = velFactor * k_11 * AsMADP + velFactor * k_10 * AMADP - k_12 * MADP
+dM_dt       = k_12 * MADP + velFactor * k_9 * (1.0-MADP-M-AMATP-MATP-MADPP-AwMADPP-AsMADPP-AsMADP-AMADP) - ATP * k_14 * M
+
+comment("Active force")
+active = overlap * F_physiol * (1.0-MADP-M-AMATP-MATP-MADPP-AwMADPP-AsMADPP) / Fmax

@@ -1,0 +1,87 @@
+\documentclass[epsfig,11pt]{article}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{epsfig}
+
+\usepackage{vmargin}
+\setpapersize{A4}
+
+\newcommand{\f}{\mathbf f}
+\newcommand{\s}{\mathbf s}
+\newcommand{\n}{\mathbf n}
+
+\title{Project 4: Tissue architecture and material properties in cardiac contraction}
+
+\begin{document}
+
+\maketitle
+
+\begin{description}
+\item{Team:} Jacob Sturdy and Krister Karlsen
+\item{Advisor:} Joakim Sundnes
+
+\item{Project summary:}
+We want to study the impact of different modeling approaches for tissue architecture and micro-structure. Specifically, we want to investigate two main questions:
+\begin{enumerate}
+\item What are the differences between the \emph{active stress} vs \emph{active strain} approach in modeling muscle contraction, strain and stress?
+\item What is the impact of fiber dispersion (i.e. variability of muscle fiber orientation) on contraction?
+\end{enumerate}
+
+These questions can initially be studied using homogenized models consisting only of ordinary differential equations, before moving into cell-tissue coupling and models based on partial differential equations. The active contraction model will be based on a model by Rice et al \cite{Rice:2008jd}, while the passive elastic response is based on a model by Holzapfel and Ogden \cite{Holzapfel:2009bb}. The Holzapfel-Ogden model offers substantial flexibility in representing tissue structure, which we will extend and utilize to explore the impact of modeling choices. 
+
+\item{Background:}
+We will consider two different models of coupled active and passive cardiac mechanics. The first one is based on the
+so-called \emph{active stress} approach, which is the most common model of active-passive heart mechanics. We have
+\begin{align}
+\nabla\cdot FS &= 0,  \label{elasticity_1} \\
+S  &= S^p + S^a,  \label{stress_split} \\
+\Psi &= \frac{a}{2b} \exp[b(I_1-3)] + \sum_{i=f,s} \frac{a_i}{2b_i}{\exp[b_i(I_{4i}-1)^2]-1} \label{strain_energy1} \\
+S^p &= 2{\partial\Psi\over\partial C}+pC^{-1}, \\
+S^a &= J F^{-1}\sigma^a(s,\lambda,\dot{\lambda})F^{-T}, \label{active_s} \\
+\sigma_a &= T_a (\f \otimes \f) + \eta_1 T_a (\s\otimes\s) +\eta_2 T_a (\n \otimes\n) , \label{active_s2}
+\end{align}
+where $T_a$ is a scalar-valued function describing the fiber tension developed by the cell, and $I_1 = tr(C)$ is the first invariant of the right Cauchy-Green tensor $C=F^tF$. The pseudo-invariants $I_{4i}, i=f,s$ are given by $\f\cdot C\f, \s\cdot C\s$, respectively, where $\f,\s$ are orthogonal unit vectors aligned with the fiber direction ($\f$) and normal to the fiber direction in the plane of the sheets ($\s$). The two terms depending on $I_{4fi}$ are set to zero if the relevant invariant $I_{4fi} < 0$. Finally $\eta_1, \eta_2$ are constants that describe active force development in the direction normal to the fibers. More details on the invariants and pseudo-invariants are found in \cite{Holzapfel:2009bb}. We will use two different models for this tension. The first is a simple phenomenological curve that describes the twitch, i.e. force development and relaxation. The second is a cell contraction model developed by Rice et al \cite{Rice:2008jd}. 
+
+The alternative formulation of active-passive coupling in cardiac tissue is the \emph{active strain} approach, where the additive decomposition of stress is replaced by a multiplicative decomposition of the deformation gradient into an active and a passive part \cite{Ambrosi:2011fb}. The active deformation is assumed to be stress-free, and represents a change in the unloaded reference state of the tissue. The coupled model is
+\begin{align}
+\nabla\cdot FS &= 0,  \label{elasticity_2} \\
+F  &= F_eF_a,  \label{def_split} \\
+\Psi &= \frac{a}{2b} \exp[b(\hat{I}_1-3)] + \sum_{i=f,s} [\frac{a_i}{2b_i}{\exp[b_i(\hat{I}_{4i}-1)^2]-1]} \label{strain_energy2} \\
+S^p &= 2{\partial\Psi\over\partial C}+pC^{-1}, \\
+F_a &= I-\gamma (\f \otimes \f) . \label{active_def}
+\end{align}
+Note here that the invariants $\hat{I}_1,\hat{I}_{4i}$ are defined as above, but computed from the elastic portion of the 
+right Cauchy-Green tensor $C_e= F_e^TF_e$. The parameter $\gamma$ is a contractility parameter describing active fiber shortening, and its dynamics may be described by a simple twitch function similar to the one used for $T_a$. An alternative formulation is $F_a =  I-\gamma (\f \otimes \f) +\gamma^{-1/2} (\s\otimes\s) + \gamma^{-1/2}(\n\otimes\n)$, which assumes that the active deformation is volume-conserving.
+
+In the most general case, the models \eqref{elasticity_1}-\eqref{active_s2} and \eqref{elasticity2}-\eqref{active_def} both describe the passive material as orthotropic, while the active component is orthotropic for the active stress approach and transversely isotropic for the active strain approach. A common choice is to set $\eta_1=\eta_2$ in \eqref{active_s2}, which 
+renders the active stress model transversely isotropic as well. The anisotropic material behavior is incorporated through the orthogonal unit vectors $\f,\s,\n$, see Figure 1 of \cite{Holzapfel:2009bb}. 
+
+The cross-fiber force development described by \eqref{active_s2} (for $\eta_1,\eta_2 \neq 0$). One is related to the microstructure of the contractila apparatus, and that the cross-bridges are not aligned with the fiber axis, but attached at a given angle to the thin and thick filaments.  Since force is developed by stretching cross bridges, it is natural to assume a force component normal to the thick and thin filaments and therefore to the fiber direction. The other argument used for transverse force components, which we will explore in more detail in this project, is the fact that not all fibers are aligned with $\f$. Although $\f$ describes the \emph{main} direction of the fibers in a point, there will be some variability, which results in transversely oriented force components. A detailed relation between fiber dispersion and the transverse components of stress can be found in \cite{Gasser:2006kd} In short, we may introduce a parameter $\kappa$ describing local fiber dispersion, and use this parameter to compute reasonable values of the parameters $\eta_1, \eta_2$.
+
+\item{Main objectives:} 
+\begin{itemize}
+\item To explore the different behaviors of the active stress and active strain formulations. Are the formulations able to describe the same deformation patterns? Are the resulting stresses comparable? How does the presence of transverse force development and transverse deformation components affect the difference between the two approaches? From a consideration of physiology and tissue micro-structure, which model do you find most reasonable?
+
+\item To explore a modified version of the active strain approach. Figure 5 in \cite{Holzapfel:2009bb} illustrates the argument for setting the fiber component in \eqref{strain_energy2} to zero when fibers are in compression (i.e. $I_{4f}<1$). 
+As shown in the figure, the fibers are assumed to buckle, and therefore not contribute to the overall stiffness of the material.
+However, during active contraction the fibers are expected to shorten, which makes this argument problematic when the model is coupled to an active stress model. Can we use an active strain approach only for the anisotropic terms in \eqref{strain_energy2}, and not for the isotropic part, to construct a more physically reasonable model? How does this model compare with the ``pure'' active stress and active strain approaches?
+
+\item To explore the impact of fiber dispersion in the models. Fiber dispersion is phenomenologically incorporated in the active stress model by setting $\eta_1, \eta_2 \neq 0$, but can be characterized more systematically by using the dispersion parameter $\kappa$ and the computations outlined in \cite{Gasser:2006kd}. These computations are fairly simple to do for the active stress model, and gives a better physical foundation for the $\eta_1, \eta_2$ parameters. What is the impact on stress and strain from varying the dispersion parameter $\kappa$? Is it possible to include the fiber dispersion also in the passive material behavior? And if so, how does this impact the results? Finally, is there a similar way to incorporate fiber dispersion in the active strain model?
+\end{itemize}
+
+\item{Tasks (general):}
+\begin{enumerate}
+\item Explore the details of the active strss and active strain models, using the original publications and other relevant literature, and the available source code. Summarize the findings in a brief report/presentation.
+\item By considering a unit cube with fibers aligned in the $x$-direction, and a uniform deformation state, derive simplified 0D versions of the 3D models above. An example of how this can be done is attached.\footnote{On the Stability of Operator Splitting Methods for Strongly Coupled Cardiac Electro-Mechanics (abstract for the European Solid Mechanics Conference, 2012).} The derivation is shown for a different material model, but should be fairly straight-forward to do for the Holzapfel-Ogden model, although it is slightly more complicated since that model is based on strain invariants rather than strain components. 
+If a realistic contraction model such as the model by Rice et al is used, the resulting model will be a combination of ODEs and algebraic relations. For the simplest contraction models the 0D model will consist of only algebraic equations. Sample code is provided (in Matlab, Python, and Gotran), which can be expanded and modified to the needs of the project.
+\item Study the questions outlined above using the simple 0D-model, with the necessary extensions to active strain, hybrid and fiber dispersion models as outlined above.
+\item Implement the same model in a finite element setting using Fenics, building on for instance the hyperelasticity demo on \emph{www.fenicsproject.org}. For the simple homogeneous case, do the finite element results agree with your simplified model results? 
+\end{enumerate}
+Although these steps have a natural order, there is some potential for parallel work. Literature surveys can be done in parallel with some of the mathematical derivations necessary for deriving the 0D models, and the code for 3D models may also be developed in parallel with 0D models.  The sample code is available in Python, Matlab and Gotran. Gotran is Simula-developed open source software for modeling with ODEs, which provides a number of convenient functions for model manipulation and automatic code generation. It can be downloaded and installed from \emph{https://bitbucket.org/simula-camo/gotran}. Gotran, and also Python code generated by Gotran, relies on a separate package called ModelParameters, which is available from \emph{https://bitbucket.org/simula-camo/modelparameters}.
+\end{description}
+
+\bibliographystyle{plain}
+\bibliography{./papers}
+
+\end{document}
