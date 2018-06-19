@@ -1,6 +1,6 @@
 Notes:
 
-Exercise 5
+Exercise 6
 
 # Y = odeint(rhs,y0,time,(p,))
 # m = Y[:,0]
