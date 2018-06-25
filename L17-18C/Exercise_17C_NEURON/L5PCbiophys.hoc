@@ -1,0 +1,41 @@
+// Author: Etay Hay, 2011
+//    Models of Neocortical Layer 5b Pyramidal Cells Capturing a Wide Range of
+//    Dendritic and Perisomatic Active Properties
+//    (Hay et al., PLoS Computational Biology, 2011) 
+//
+// Model of L5 Pyramidal Cell, constrained both for BAC firing and Current Step Firing
+
+
+begintemplate L5PCbiophys
+public biophys
+
+proc biophys() {
+  forsec $o1.all {
+    cm = 1
+    Ra = 100
+  }
+
+  forsec $o1.somatic {
+    insert hh
+  }
+
+  forsec $o1.apical {
+    insert pas
+    e_pas = -90
+    g_pas = 0.0000589 
+  }
+  forsec $o1.basal {
+    cm = 2
+    insert pas
+    e_pas = -90
+    g_pas = 0.0000467 
+  }
+
+  forsec $o1.axonal {
+    insert pas
+    e_pas = -90
+    g_pas = 0.0000325 
+  }
+}
+
+endtemplate L5PCbiophys

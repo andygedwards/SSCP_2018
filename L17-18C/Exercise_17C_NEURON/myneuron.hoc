@@ -1,0 +1,48 @@
+load_file("stdlib.hoc")
+load_file("stdrun.hoc")
+
+objref cvode
+cvode = new CVode()
+cvode.active(0)
+
+create soma, dend[3]
+
+connect dend[0](0), soma(1)
+connect dend[1](0), soma(1)
+connect dend[2](0), dend[0](1)
+
+access soma
+
+dend[0] insert pas
+dend[1] insert pas
+dend[2] insert pas
+soma insert hh
+soma {Ra = 100 cm = 1 diam = 10 L = 20}
+dend[0] {Ra = 100 cm = 1 diam = 5 L = 100 e_pas = -54.3 g_pas = 0.00003}
+dend[1] {Ra = 100 cm = 1 diam = 2 L = 50 e_pas = -54.3 g_pas = 0.00003}
+dend[2] {Ra = 100 cm = 1 diam = 2 L = 80 e_pas = -54.3 g_pas = 0.00003}
+forall nseg = 5
+dt = 0.025
+tstop = 200
+
+objref stim, Vrec
+
+soma stim = new IClamp(0.5)
+stim.del = 100
+stim.dur = 10
+stim.amp = 0.12
+
+Vrec = new Vector()
+Vrec.record(&v(0.5),dt)
+
+init()
+run()
+
+objref myFile
+myFile = new File()
+myFile.wopen("run.dat")
+for i=0,tstop/dt-1 {
+  myFile.printf("%g %g\n", dt*i, Vrec.x(i))
+}
+myFile.close()
+
